@@ -1,0 +1,233 @@
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="codeedit.css" />
+<script src="codeedit.js"></script>
+<script src="intellisense.js"></script>
+<script src="languages/javascript.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {	
+		var editorelem = document.getElementById("editor");
+		var caretelem = document.getElementById("caret");
+		var textbehindelem = document.getElementById("textbehind");
+		
+		editor.editorElement = editorelem;
+		editor.caretElement = caretelem;
+
+		editorelem.onfocus = function() {
+			textbehindelem.focus();
+			console.log("focus");
+			editor.hasFocus = true;
+		}
+		
+		textbehindelem.onblur = function() {
+			console.log("blur");
+			editor.hasFocus = false;
+		}
+		
+		editorelem.onscroll = function(event) {
+			var scrleft = editorelem.scrollLeft;
+			for (var i = 0; i < editor.lines.length; i++) {
+				var lineelem = editorelem.getElementsByClassName("line" + i);
+				if (lineelem.length > 0) {
+					lineelem = lineelem[0];
+					var gutter = lineelem.getElementsByClassName("gutter")[0];
+					gutter.style.left = scrleft + "px";
+				}
+			}
+		}
+		
+		textbehindelem.onkeydown = function(event) {
+			if (editor.intellisense.isOpen) {
+				if (editor.intellisense.catchKey(event)) 
+					return;
+			}
+		
+			var keyChar = String.fromCharCode(event.keyCode);
+			console.log(event.keyCode);
+			
+			if (event.keyCode == 16 /* shift */) {
+				if (editor.selectionMode === false) {
+					editor.selectionMode = true;
+					if (editor.selectionOrigin === null) {
+						editor.selectionOrigin = { x: editor.caretPosition.x, y: editor.caretPosition.y };
+					}
+				}
+			}
+			
+			if (event.keyCode == 37 /* left */) {
+				if (editor.caretPosition.x > 0) {
+					editor.caretPosition.x--;
+					editor.renderLine(editor.caretPosition.y);
+				} else {
+					if (editor.caretPosition.y > 0) {
+						editor.caretPosition.y--;
+						editor.caretPosition.x = editor.lines[editor.caretPosition.y].length;
+						editor.renderLine(editor.caretPosition.y);
+						editor.renderLine(editor.caretPosition.y + 1);
+					}
+				}
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 39 /* right */) {
+				if (editor.caretPosition.x < editor.lines[editor.caretPosition.y].length) {
+					editor.caretPosition.x++;
+					editor.renderLine(editor.caretPosition.y);
+				} else {
+					if (editor.caretPosition.y < editor.lines.length - 1) {
+						editor.caretPosition.y++;
+						editor.caretPosition.x = 0;
+						editor.renderLine(editor.caretPosition.y);
+						editor.renderLine(editor.caretPosition.y - 1);
+					}
+				}
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 38 /* up */) {
+				if (editor.caretPosition.y > 0) {
+					editor.caretPosition.y--;
+					editor.language.smartCaretPositioning();
+					editor.renderLine(editor.caretPosition.y);
+					editor.renderLine(editor.caretPosition.y + 1);
+				}
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 40 /* down */) {
+				if (editor.caretPosition.y < editor.lines.length - 1) {
+					editor.caretPosition.y++;
+					editor.language.smartCaretPositioning();
+					editor.renderLine(editor.caretPosition.y);
+					editor.renderLine(editor.caretPosition.y - 1);
+				}
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 8 /* backspace */) {
+				editor.backspace();
+			}
+			
+			if (event.keyCode == 46 /* delete */) {
+				editor.del();
+			}
+			
+			if (event.keyCode == 13 /* return */) {
+				editor.newline();
+			}
+			
+			if (event.keyCode == 9 /* tab */) { 
+				event.preventDefault();			
+				editor.insert("\t");
+			} 
+			
+			if (event.keyCode == 36 /* home */) {
+				editor.home();
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 35 /* end */) {
+				editor.end();
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 33 /* page up */) {
+				editor.pageup();
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 34 /* page down */) {
+				editor.pagedown();
+				
+				if (!editor.selectionMode) editor.deselect();
+			}
+			
+			if (event.keyCode == 32 && event.ctrlKey) {
+				// ctrl + space: trigger intellisense
+				editor.intellisense.request();
+				editor.skipNextInput = true;
+			}
+			
+			if (event.ctrlKey && keyChar == 'V') {
+				(function(autoIndentval) {
+				editor.enableAutoIndent = false;
+				setTimeout(function() {
+					editor.enableAutoIndent = autoIndentval;
+				}, 10);
+				})(editor.enableAutoIndent);
+			}
+			
+			setTimeout(function() {
+				editor.ensureCaretVisible();
+			}, 0);
+        }
+		
+		textbehindelem.onkeyup = function(event) {
+			if (event.keyCode == 16 /* shift */) {
+				editor.selectionMode = false;
+			}
+		}
+		
+		textbehindelem.oninput = function(event) {
+			if (!editor.skipNextInput) {
+				if (textbehindelem.value.length > 0) {
+					if (editor.getSelectionLength() > 0) {
+						editor.deleteSelection();
+					}
+					if (textbehindelem.value != "\n") {
+						editor.insert(textbehindelem);
+					}
+				}
+			} else {
+				editor.skipNextInput = false;
+			}
+			
+			textbehindelem.value = "";
+			editor.deselect();
+        }
+		
+		window.onmouseup = function(e) {
+			if (editor.selectionMouseMode) {
+				editor.selectionMode = false;
+				editor.selectionMouseMode = false;
+			}
+		};
+		
+		editor.render();
+		
+		editor.lineHeight = editor.editorElement.getElementsByClassName("line")[0].offsetHeight;
+		editor.gutterWidth = editor.editorElement.getElementsByClassName("line")[0].getElementsByClassName('gutter')[0].offsetWidth;
+		editor.textLeft = editor.editorElement.getElementsByClassName("line")[0].getElementsByClassName('text')[0].offsetLeft;
+		
+		// measure font width
+		var span = document.createElement('span');
+		span.textContent = 'x';
+		editor.editorElement.appendChild(span);
+		editor.fontWidth = span.offsetWidth;
+		editor.editorElement.removeChild(span);
+		
+		editor.toggleCaret();
+	});
+</script>
+
+</head>
+<body>
+	<div id="editor" tabindex="0">
+		<div id="caret"></div>
+		<div id="intellisense">
+			<ul></ul>
+			<div class="emptylist">No autocomplete suggestions</div>
+		</div>
+	</div>
+	<!--<input type="text" id="textbehind" style="position: absolute; top: 0; left: 0; width: 0px; height: 10px; border: 0;" />-->
+	<textarea id="textbehind" style="position: absolute; top: 0; left: 0; width: 0px; height: 10px; border: 0; outline: 0; overflow: hidden; resize: none;"></textarea>
+</body>
+</html>

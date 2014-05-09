@@ -1,0 +1,138 @@
+#editor {
+	border: 1px inset #eee;
+	font-family: consolas, monospace;
+	font-size: 13px;
+	overflow: scroll;
+	position: relative;
+	height: 500px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#caret {
+	width: 0px;
+	background: transparent;
+	height: 0.9em;
+	display: inline-block;
+	position: absolute;
+	top: 1px;
+	margin-right: -1px;
+	border-right: 1px solid black;
+	cursor: text;
+}
+
+.line {
+	height: 15px;
+	overflow-x: display;
+	white-space:nowrap;
+	margin-right: 4px;
+	position: relative;
+	cursor: text;
+}
+
+.gutter {
+	display: inline-block;
+	background: #eee;
+	width: 36px;
+	border-right: 1px solid #ddd;
+	margin-right: 4px;
+	padding-right: 4px;
+	text-align: right;
+	color: #888;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 10;
+	cursor: default;
+}
+
+.text {
+	display: inline-block;
+	position: absolute;
+	left: 45px;
+	top: 0;
+	z-index: 9;
+}
+
+.selection {
+	background: #ADD6DF;
+	width: 100px;
+	display: none;
+	position: absolute;
+	z-index: 8;
+	height: 100%;
+}
+
+.comment {
+	color: #659905 !important;
+	font-style: italic;
+}
+
+.string {
+	color: #C11515;
+	
+}
+
+#intellisense {
+	position: absolute;
+	width: 250px;
+	height: 150px;
+	border: 1px solid #9A9A9A; 
+	background: white;
+	font-family: Arial;
+	font-size: 12px;
+	display: none;
+	z-index: 9999;
+	overflow-y: auto;
+}
+
+#intellisense .emptylist {
+	display: none;
+	color: #9A9A9A;
+	text-align: center;
+	font-size: 11px;
+	font-style: italic;
+	padding: 2px;
+}
+
+#intellisense ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	cursor: default;
+}
+
+#intellisense li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	padding-left: 24px;
+	height: 16px;
+	line-height: 16px;
+	background-position: 3px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+}
+
+#intellisense li.selected {
+	background-color: #3399FF;
+	color: white;
+}
+
+#intellisense li.active {
+	border: 1px solid #3399FF;
+}
+
+#intellisense li.method {
+	background-image: url('icons/method.png');
+}
+
+#intellisense li.property {
+	background-image: url('icons/property.png');
+}
+
+#intellisense li.class {
+	background-image: url('icons/class.png');
+}

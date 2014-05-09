@@ -1,14 +1,24 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
 #editor {
-	border: 1px inset #eee;
 	font-family: consolas, monospace;
 	font-size: 13px;
 	overflow: scroll;
 	position: relative;
-	height: 500px;
+	height: 100%;
+	cursor: text;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	z-index: 10;
+}
+
+#textbehind {
+	z-index: 9;
 }
 
 #caret {
@@ -32,9 +42,13 @@
 	cursor: text;
 }
 
+#editor > .gutter {
+	height: 100%;
+}
+
 .gutter {
 	display: inline-block;
-	background: #eee;
+	background: #fafafa;
 	width: 36px;
 	border-right: 1px solid #ddd;
 	margin-right: 4px;
@@ -139,4 +153,12 @@
 
 #intellisense li.snippet {
 	background-image: url('icons/snippet.png');
+}
+
+#intellisense li.const {
+	background-image: url('icons/const.png');
+}
+
+#intellisense li.tag {
+	background-image: url('icons/tag.png');
 }

@@ -194,4 +194,50 @@ editor.language = {
 		return str;
 	},
 	
+	getKeywordUpToCaret: function() {
+		var line = editor.lines[editor.caretPosition.y].substr(0, editor.caretPosition.x);
+		return line.match(/[a-zA-Z0-9]*$/)[0];
+	},
+	
+	getIntellisenseFromCurrentState: function() {
+		if (editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null) {
+			// find close tag
+			return [ { name: 'Grid', type: 'tag' } ];
+		} else {	
+			var items = [
+				{ name: 'Grid', type: 'tag' },
+				{ name: 'Layout', type: 'tag' },
+				{ name: 'Button', type: 'tag' },
+				{ name: 'Label', type: 'tag' },
+			];
+		
+			items.sort(function(a, b) {
+				if (a.name.toLowerCase() < b.name.toLowerCase())
+					return -1;
+				if (a.name.toLowerCase() > b.name.toLowerCase())
+					return 1;
+				return 0;
+			});
+			
+			return items;
+		}
+	},
+	
+	onInsert: function(str) {
+		var kw = editor.language.getKeywordUpToCaret();
+		var line = editor.lines[editor.caretPosition.y].trim();
+		if (str === '<'
+				|| editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null
+			|| (kw.length > 0 && (line == kw
+				|| line.match(new RegExp("=\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp(";\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp("\\.\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp("\\&\\&\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp("\\|\\|\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp("\\(\\s*(" + kw + ")$", '')) !== null
+				|| line.match(new RegExp(",\\s*(" + kw + ")$", '')) !== null
+			))) {
+			editor.intellisense.request(false);
+		}
+	},
 };

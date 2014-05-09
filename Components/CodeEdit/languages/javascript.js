@@ -202,14 +202,20 @@ editor.language = {
 			{ name: 'addMonths', type: 'method' },
 			{ name: 'editor', type: 'method' },
 			{ name: 'getKeywordUpToCaret', type: 'method' },
-			{ name: 'Date', type: 'class' },
-			{ name: 'return', type: 'method' },
 			{ name: 'inString', type: 'property' },
 			{ name: 'multiLineCommentStartTrigger', type: 'method' },			
 		];
 		
 		for (var i = 0; i < editor.language.keywords1.keywords.length; i++) {
 			items.push({ name: editor.language.keywords1.keywords[i], type: 'snippet' });
+		}
+		
+		for (var i = 0; i < editor.language.keywords2.keywords.length; i++) {
+			items.push({ name: editor.language.keywords2.keywords[i], type: 'class' });
+		}
+		
+		for (var i = 0; i < editor.language.keywords3.keywords.length; i++) {
+			items.push({ name: editor.language.keywords3.keywords[i], type: 'const' });
 		}
 	
 		items.sort(function(a, b) {
@@ -226,8 +232,9 @@ editor.language = {
 	onInsert: function(str) {
 		var kw = editor.language.getKeywordUpToCaret();
 		var line = editor.lines[editor.caretPosition.y].trim();
-		if (str === '.' || 
-			(kw.length > 0 && (line == kw
+		if (str === '.'
+				|| editor.lines[editor.caretPosition.y].match(new RegExp("new\\s+$", '')) !== null
+			|| (kw.length > 0 && (line == kw
 				|| line.match(new RegExp("=\\s*(" + kw + ")$", '')) !== null
 				|| line.match(new RegExp(";\\s*(" + kw + ")$", '')) !== null
 				|| line.match(new RegExp("\\.\\s*(" + kw + ")$", '')) !== null

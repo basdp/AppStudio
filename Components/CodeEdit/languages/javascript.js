@@ -194,7 +194,7 @@ editor.language = {
 	},
 	
 	getIntellisenseFromCurrentState: function() {
-		return [
+		var items = [
 			{ name: 'catchKey', type: 'property' },
 			{ name: 'inMultiLineComment', type: 'method' },
 			{ name: 'getIntellisenseFromCurrentState', type: 'property' },
@@ -205,8 +205,22 @@ editor.language = {
 			{ name: 'Date', type: 'class' },
 			{ name: 'return', type: 'method' },
 			{ name: 'inString', type: 'property' },
-			{ name: 'multiLineCommentStartTrigger', type: 'method' },
+			{ name: 'multiLineCommentStartTrigger', type: 'method' },			
 		];
+		
+		for (var i = 0; i < editor.language.keywords1.keywords.length; i++) {
+			items.push({ name: editor.language.keywords1.keywords[i], type: 'snippet' });
+		}
+	
+		items.sort(function(a, b) {
+			if (a.name.toLowerCase() < b.name.toLowerCase())
+				return -1;
+			if (a.name.toLowerCase() > b.name.toLowerCase())
+				return 1;
+			return 0;
+		});
+		
+		return items;
 	},
 	
 	onInsert: function(str) {

@@ -136,3 +136,7 @@
 #intellisense li.class {
 	background-image: url('icons/class.png');
 }
+
+#intellisense li.snippet {
+	background-image: url('icons/snippet.png');
+}

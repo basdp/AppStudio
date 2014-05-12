@@ -231,7 +231,7 @@ editor.language = {
 				}
 			}
 			return [ { name: tagname, type: 'tag', code: tagname + '>' } ];
-		} else {	
+		} else if (editor.lines[editor.caretPosition.y].match(/\<$/) !== null) {
 			var items = [
 				{ name: 'Grid', type: 'tag' },
 				{ name: 'Layout', type: 'tag' },
@@ -248,6 +248,16 @@ editor.language = {
 			});
 			
 			return items;
+		} else if (editor.lines[editor.caretPosition.y].match(/\<\s*([a-zA-Z0-9\.\_\-]+)[^\>]+$/) !== null) {
+			// attribute
+			var items = [
+				{ name: 'Name', type: 'property' },
+				{ name: 'Width', type: 'property' },
+				{ name: 'Height', type: 'property' },
+				{ name: 'Style', type: 'property' },
+			];
+			
+			return items;
 		}
 		
 		return [];
@@ -258,6 +268,7 @@ editor.language = {
 		var line = editor.lines[editor.caretPosition.y].trim();
 		if (str === '<'
 				|| editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null
+				|| editor.lines[editor.caretPosition.y].match(/\<\s*([a-zA-Z0-9\.\_\-]+).*?(\s)$/) !== null
 			) {
 			editor.intellisense.request(false);
 		}

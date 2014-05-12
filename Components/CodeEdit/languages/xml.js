@@ -10,19 +10,20 @@ editor.language = {
 			editor.insert(indentprev[0]);
 		}
 		var prevLine = editor.lines[editor.caretPosition.y - 1].trim();
-		if (prevLine.charAt(prevLine.length - 1) == '{') {
+		if (prevLine.match(/\<[^/][^\>]*[^/]\>$/) !== null) {
 			// indent
 			editor.insert(editor.language.indentstring);
 		}
 	},
 	
 	autoUnIndentAtInsert: function(ins) {
-		if (ins == '}') {
-			var line = editor.lines[editor.caretPosition.y];
-			var possibleindent = line.substr(editor.caretPosition.x - ins.length - editor.language.indentstring.length, editor.language.indentstring.length);
+		var prevLine = editor.lines[editor.caretPosition.y];
+		var m = prevLine.match(/\<\/[^\>]*\>$/);
+		if (m !== null) {
+			// unindent
+			var possibleindent = prevLine.substr(editor.caretPosition.x - m[0].length - editor.language.indentstring.length, editor.language.indentstring.length);
 			if (possibleindent == editor.language.indentstring) {
-				var newline = line.substr(0, editor.caretPosition.x - ins.length - possibleindent.length);
-				newline += line.substr(editor.caretPosition.x - ins.length);
+				var newline = prevLine.replace(possibleindent, '');
 				editor.lines[editor.caretPosition.y] = newline;
 			}
 		}
@@ -199,10 +200,37 @@ editor.language = {
 		return line.match(/[a-zA-Z0-9]*$/)[0];
 	},
 	
+	findTags: function() {
+		var xml = '';
+		for (var y = 0; y < editor.caretPosition.y; y++) {
+			xml += editor.lines[y] + '\n';
+		}
+		xml += editor.lines[editor.caretPosition.y].substr(0, editor.caretPosition.x);
+		return xml.match(/\<\/?[a-zA-Z0-9\.\_\-]+[^\>]*\>/g);
+	},
+	
 	getIntellisenseFromCurrentState: function() {
-		if (editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null) {
+		if (editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/[a-zA-Z0-9\.\_\-]*$", '')) !== null) {
 			// find close tag
-			return [ { name: 'Grid', type: 'tag' } ];
+			var tags = editor.language.findTags();
+			if (tags === null || tags.length === 0) {
+				return [];
+			} else {
+				var tagstack = [];
+				for (var i = 0; i < tags.length; i++) {
+					if (tags[i].substr(0, 2) == "</") {
+						tagstack.pop();
+					} else if (tags[i].substr(tags[i].length - 2) == "/>") {
+						// self closing, do nothing
+					} else {
+						tagstack.push(tags[i]);	
+					}
+				}
+				if (tagstack.length > 0) {
+					var tagname = tagstack[tagstack.length - 1].match(/\<([a-zA-Z0-9\.\_\-]+)/)[1];
+				}
+			}
+			return [ { name: tagname, type: 'tag', code: tagname + '>' } ];
 		} else {	
 			var items = [
 				{ name: 'Grid', type: 'tag' },
@@ -221,6 +249,8 @@ editor.language = {
 			
 			return items;
 		}
+		
+		return [];
 	},
 	
 	onInsert: function(str) {
@@ -228,15 +258,7 @@ editor.language = {
 		var line = editor.lines[editor.caretPosition.y].trim();
 		if (str === '<'
 				|| editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null
-			|| (kw.length > 0 && (line == kw
-				|| line.match(new RegExp("=\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp(";\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp("\\.\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp("\\&\\&\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp("\\|\\|\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp("\\(\\s*(" + kw + ")$", '')) !== null
-				|| line.match(new RegExp(",\\s*(" + kw + ")$", '')) !== null
-			))) {
+			) {
 			editor.intellisense.request(false);
 		}
 	},

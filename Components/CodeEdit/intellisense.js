@@ -23,6 +23,11 @@ editor.intellisense = {
 			var li = document.createElement('li');
 			li.textContent = list[i].name;
 			li.className = list[i].type;
+			if (list[i].code !== undefined) {
+				li.setAttribute('data-code', list[i].code);
+			} else {
+				li.setAttribute('data-code', list[i].name);
+			}
 			if (list[i].active) li.className += " active";
 			li.onmousedown = function() {
 				var sel = editor.intellisense.windowElement.getElementsByClassName('selected');
@@ -123,7 +128,7 @@ editor.intellisense = {
 		for (var i = 0; i < editor.intellisense.hintCache.length; i++) {
 			editor.backspace();
 		}
-		editor.insert(sel.textContent);
+		editor.insert(sel.getAttribute('data-code'));
 		editor.intellisense.dismiss();
 	},
 	

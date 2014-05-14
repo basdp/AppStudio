@@ -17,6 +17,77 @@ var editor = {
 	
 	skipNextInput: false,
 	
+	undoStack: [],
+	redoStack: [],
+	undoSize: 10,
+	
+	undoAdd: function(type, line, code, x, y) {
+		editor.undoStack.push({ type: type, line: line, code: code, caretX: x, caretY: y });
+	},
+	
+	undo: function() {
+		if (editor.undoStack.length === 0) return;
+		
+		var u = editor.undoStack.pop();
+		if (u.type == 'line') {
+			editor.redoStack.push( { type: u.type, line: u.line, code: editor.lines[u.line], caretX: editor.caretPosition.x, caretY: editor.caretPosition.y } );
+		} else if (u.type == 'full') {
+			editor.redoStack.push( { type: u.type, line: u.line, code: editor.lines.slice(0), caretX: editor.caretPosition.x, caretY: editor.caretPosition.y } );
+		}
+		
+		editor.caretPosition.x = u.caretX;
+		editor.caretPosition.y = u.caretY;
+		editor.positionCaret();
+		
+		if (u.type == 'line') {
+			editor.lines[u.line] = u.code;
+			editor.lineChanged(u.line);
+		} else if (u.type == 'full') {
+			editor.lines = u.code.slice(0);
+			var linesels = editor.editorElement.getElementsByClassName('line');
+			var lines = [];
+			for (var i = 0; i < linesels.length; i++) {
+				lines[i] = linesels[i];
+			}
+			for (var i = 0; i < lines.length; i++) {
+				lines[i].remove();
+			}
+			editor.render();
+		}
+		
+	},
+	
+	redo: function() {
+		if (editor.redoStack.length === 0) return;
+		
+		var u = editor.redoStack.pop();
+		if (u.type == 'line') {
+			editor.undoStack.push( { type: u.type, line: u.line, code: editor.lines[u.line], caretX: editor.caretPosition.x, caretY: editor.caretPosition.y } );
+		} else if (u.type == 'full') {
+			editor.undoStack.push( { type: u.type, line: u.line, code: editor.lines.slice(0), caretX: editor.caretPosition.x, caretY: editor.caretPosition.y } );
+		}
+		
+		editor.caretPosition.x = u.caretX;
+		editor.caretPosition.y = u.caretY;
+		editor.positionCaret();
+		
+		if (u.type == 'line') {
+			editor.lines[u.line] = u.code;
+			editor.lineChanged(u.line);
+		} else if (u.type == 'full') {
+			editor.lines = u.code.slice(0);
+			var linesels = editor.editorElement.getElementsByClassName('line');
+			var lines = [];
+			for (var i = 0; i < linesels.length; i++) {
+				lines[i] = linesels[i];
+			}
+			for (var i = 0; i < lines.length; i++) {
+				lines[i].remove();
+			}
+			editor.render();
+		}
+	},
+	
 	lineChanged: function(line) {
 		editor.positionCaret();
 	
@@ -46,7 +117,8 @@ var editor = {
 		}
 	},
 	
-	insert: function(str) {
+	insert: function(str, recordUndo) {
+		if (recordUndo === undefined) recordUndo = true;
 		var strlines;
 		if (str.nodeType !== undefined) {
 			strlines = str.value.split("\n");
@@ -55,10 +127,13 @@ var editor = {
 		}
 		if (strlines.length > 1) {
 			// this is a multiline string
+			if (recordUndo)
+				editor.undoAdd('full', 0, editor.lines.slice(0), editor.caretPosition.x, editor.caretPosition.y);
+			
 			var currentline = editor.caretPosition.y;
 			editor.pauseRendering = true;
 			for (var i = 0; i < strlines.length; i++) {
-				editor.insert(strlines[i]);
+				editor.insert(strlines[i], false);
 				editor.newline();
 			}
 			editor.pauseRendering = false;
@@ -70,6 +145,10 @@ var editor = {
 				str = str.value;
 			}
 			var line = editor.lines[editor.caretPosition.y];
+			
+			if (recordUndo)
+				editor.undoAdd('line', editor.caretPosition.y, line, editor.caretPosition.x, editor.caretPosition.y);
+			
 			editor.lines[editor.caretPosition.y] = line.substr(0, editor.caretPosition.x) + str + line.substr(editor.caretPosition.x);
 			if (editor.caretPosition.x > editor.lines[editor.caretPosition.y].length)
 				editor.caretPosition.x = editor.lines[editor.caretPosition.y].length - 1;

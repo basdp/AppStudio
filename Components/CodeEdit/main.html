@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="codeedit.css" />
 <script src="codeedit.js"></script>
 <script src="intellisense.js"></script>
-<script src="languages/xml.js"></script>
+<script src="languages/javascript.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {	
 		var editorelem = document.getElementById("editor");
@@ -163,6 +163,14 @@ document.addEventListener('DOMContentLoaded', function() {
 					editor.enableAutoIndent = autoIndentval;
 				}, 10);
 				})(editor.enableAutoIndent);
+			}
+			
+			if (event.ctrlKey && keyChar == 'Z') {
+				editor.undo();
+			}
+			
+			if (event.ctrlKey && keyChar == 'Y') {
+				editor.redo();
 			}
 			
 			setTimeout(function() {

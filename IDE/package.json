@@ -1,0 +1,23 @@
+{
+  "name": "IDE",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node_modules\\.bin\\nodewebkit"
+  },
+  "window": {
+    "toolbar": false,
+    "width": 800,
+    "height": 600
+  },
+  "author": "",
+  "license": "Unknown",
+  "devDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "dependencies": {
+    "nodewebkit": "~0.8.6-2"
+  }
+}

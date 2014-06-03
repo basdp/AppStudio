@@ -147,7 +147,7 @@ editor.intellisense = {
 				if (lis[i].classList.contains('selected')) {
 					selectedVisible = true;
 				}
-				lis[i].innerHTML = lis[i].textContent.replace(new RegExp('(' + editor.intellisense.preg_quote(editor.intellisense.hintCache) + ')', 'gi'), '<b>$1</b>');
+				lis[i].innerHTML = lis[i].textContent.replace(new RegExp('(' + editor.intellisense.preg_quote(editor.intellisense.hintCache) + ')', 'gi'), '<u>$1</u>');
 			}
 		}
 		

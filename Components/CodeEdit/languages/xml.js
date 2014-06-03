@@ -202,7 +202,7 @@ editor.language = {
 	getIntellisenseFromCurrentState: function() {
 		if (editor.lines[editor.caretPosition.y].match(new RegExp("\\<\\/$", '')) !== null) {
 			// find close tag
-			return [ { name: 'Grid', type: 'tag' } ];
+			return [ { name: 'Grid>', type: 'tag' } ];
 		} else {	
 			var items = [
 				{ name: 'Grid', type: 'tag' },

@@ -4,12 +4,15 @@
     <link type="text/css" rel="stylesheet" href="style.css" />
     <link type="text/css" rel="stylesheet" href="treeview.css" />
     <script>
-        var gui = require('nw.gui');
-        var win = gui.Window.get();
+        if (window.require !== undefined) {
+            var gui = require('nw.gui');
+            var win = gui.Window.get();            
+        }
     </script>
     <script src="background.js"></script>
     <script src="fullheight.js"></script>
     <script src="treeview.js"></script>
+    <script src="menus.js"></script>
 </head>
 <body>
     <div class="bg-dark line1 full-height"></div>
@@ -23,6 +26,16 @@
             <button class="minimize" onclick="win.minimize()"><img src="images/minimize.png"></button>
         </div>
         <div id="menu"></div>
+        
+        <ul id="windowsmenubar">
+            <li onclick="openmenu('file', this)">File</li>
+            <li onclick="openmenu('edit', this)">Edit</li>
+            <li onclick="openmenu('project', this)">Project</li>
+            <li onclick="openmenu('build', this)">Build</li>
+            <li onclick="openmenu('team', this)">Team</li>
+            <li onclick="openmenu('tools', this)">Tools</li>
+            <li onclick="openmenu('help', this)">Help</li>
+        </ul>
     </header>
     
     <ul id="tabbar">

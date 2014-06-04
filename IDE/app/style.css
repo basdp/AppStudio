@@ -31,6 +31,8 @@ header {
     background: url(images/bg-dark.png);
     position: relative;
     z-index: 12;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 header .title {
@@ -79,6 +81,26 @@ header #menu:hover {
     opacity: 1;
 }
 
+header #windowsmenubar {
+    position: absolute;
+    list-style: none;
+    top: 2px;
+    left: 4px;
+    -webkit-app-region: no-drag;
+    color: #d7d7d7;
+}
+
+header #windowsmenubar li {
+    float: left; 
+    padding: 4px 6px;
+    line-height: 16px;
+}
+
+header #windowsmenubar li:hover {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
 #tabbar {
     list-style: none;
     display: block;
@@ -87,6 +109,8 @@ header #menu:hover {
     top: 36px;
     left: 266px;
     z-index: 13;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 #tabbar li {
@@ -150,7 +174,7 @@ header #menu:hover {
     padding-left: 266px;
     width: 100%;
     box-sizing: border-box;
-    z-index: 12;
+    z-index: 11;
 }
 
 #toolbar {
@@ -160,8 +184,10 @@ header #menu:hover {
     padding-left: 8px;
     border-bottom: 1px solid #272727;
     width: 100%;
-    z-index: 12;
+    z-index: 11;
     box-sizing: border-box;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 #toolbar li {
@@ -174,6 +200,7 @@ header #menu:hover {
 #toolbar li img {
     -webkit-filter: invert(100%);   
     opacity: 0.8;
+    -webkit-user-drag: none;
 }
 
 #toolbar li:hover img {
@@ -198,6 +225,8 @@ header #menu:hover {
     border-right: 1px solid #272727;
     width: 44px;
     z-index: 11;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 #palettebar li#palettebarhandle {
@@ -233,6 +262,7 @@ header #menu:hover {
 #palettebar li img {
     -webkit-filter: invert(100%);   
     opacity: 0.8;
+    -webkit-user-drag: none;
 }
 
 #palettebar li:hover img {

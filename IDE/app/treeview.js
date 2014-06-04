@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 }
                 e.stopPropagation();
             });
-            expandableNode.addEventListener('click', function(e) {
+            expandableNode.addEventListener('mouseup', function(e) {
                 if (e.x < expandableNode.getBoundingClientRect().left) {
                     if (expandableNode.classList.contains("closed")) {
                         // open the node
@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function(){
         // node selection
         var allitems = el.querySelectorAll("li");
         Array.prototype.forEach.call(allitems, function(el, i) {
-            el.addEventListener('click', function(e) {
+            el.addEventListener('mousedown', function(e) {
                 if (e.y > el.getBoundingClientRect().top + 20 || e.x < el.getBoundingClientRect().left) {
                     return false;
                 }

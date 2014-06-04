@@ -37,6 +37,7 @@
     margin-right: 2px;  
     position: relative;
     top: 3px;
+    -webkit-user-drag: none;
 }
 
 .treeview li.large > img {

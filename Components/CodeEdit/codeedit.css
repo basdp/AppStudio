@@ -15,6 +15,7 @@ html, body {
 	-ms-user-select: none;
 	user-select: none;
 	z-index: 10;
+    background: white;
 }
 
 #textbehind {

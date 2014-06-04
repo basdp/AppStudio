@@ -2,21 +2,97 @@
 <head>
   <title>AppStudio</title>
     <link type="text/css" rel="stylesheet" href="style.css" />
+    <link type="text/css" rel="stylesheet" href="treeview.css" />
     <script>
         var gui = require('nw.gui');
         var win = gui.Window.get();
     </script>
+    <script src="background.js"></script>
+    <script src="fullheight.js"></script>
+    <script src="treeview.js"></script>
 </head>
 <body>
+    <div class="bg-dark line1 full-height"></div>
+    
     <header>
         <div class="windowdrag"></div>
         <div class="title">Main App *</div>
         <div class="windowbuttons">
-            <button class="close" onclick="win.close()"><img src="close.png"></button>
-            <button class="maximize" onclick="win.maximize()"><img src="maximize.png"></button>
-            <button class="minimize" onclick="win.minimize()"><img src="minimize.png"></button>
+            <button class="close" onclick="win.close()"><img src="images/close.png"></button>
+            <button class="maximize" onclick="win.maximize()"><img src="images/maximize.png"></button>
+            <button class="minimize" onclick="win.minimize()"><img src="images/minimize.png"></button>
         </div>
+        <div id="menu"></div>
     </header>
+    
+    <ul id="tabbar">
+        <li class="bg-light selected"><img src="images/icons/file-xml.png">Main.xml<div class="closebutton"></div></li>
+        <li class=""><img src="images/icons/file-js.png">Main.xml<div class="closebutton"></div></li>
+        <li class=""><img src="images/icons/file-des.png">Main.xml<div class="closebutton"></div></li>
+    </ul>
+    
+    <div class="toolbar-container"><ul id="toolbar">
+        <li><img src="images/icons/save.png"></li>
+        <hr>
+        <li><img src="images/icons/cut.png"></li>
+        <li><img src="images/icons/copy.png"></li>
+        <li><img src="images/icons/paste.png"></li>
+        <hr>
+        <li><img src="images/icons/search.png"></li>
+        <li><img src="images/icons/info.png"></li>
+        <li><img src="images/icons/book.png"></li>
+        <li><img src="images/icons/comment.png"></li>
+    </ul></div>
+    
+    <ul id="palettebar" class="full-height">
+        <li id="palettebarhandle"></li>
+        <li><img src="images/icons/save.png"></li>
+        <hr>
+        <li><img src="images/icons/cut.png"></li>
+        <li><img src="images/icons/copy.png"></li>
+        <li><img src="images/icons/paste.png"></li>
+        <li><img src="images/icons/search.png"></li>
+        <li><img src="images/icons/info.png"></li>
+        <li><img src="images/icons/book.png"></li>
+        <li><img src="images/icons/comment.png"></li>
+    </ul>
+    
+    <div id="content">
+       <iframe src="../../Components/CodeEdit/main.html" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+    
+    <div class="projectbar-container"><div id="projectbar">
+        <div class="title bg-dark"><img src="images/sidebar-open.png" /> Project</div>
+        <div class="projecttree">
+            <ul class="treeview">
+                <li class=""><img src="images/icons/file-project.png"> Main App <div class="subtext">(3 targets)</div>
+                    <ul>
+                        <li><img src="images/icons/folder.png"> Shutterbugs
+                            <ul>
+                                <li><img src="images/icons/file-js.png"> init.js</li>
+                                <li><img src="images/icons/file-js.png"> garble.js</li>
+                                <li><img src="images/icons/folder.png"> Images
+                                    <ul>
+                                        <li><img src="images/icons/file-unknown.png"> garble.png</li>
+                                        <li><img src="images/icons/file-unknown.png"> garble2.png</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="title bg-dark"><img src="images/sidebar-closed.png" /> Team</div>
+        hoi
+    </div></div>
+    
+    <div class="sidebar-container"><div id="sidebar">
+        <div class="title bg-dark"><img src="images/sidebar-open.png" /> Inspector</div>
+        hoi
+        <div class="title bg-dark"><img src="images/sidebar-closed.png" /> Documentation</div>
+        hoi
+    </div></div>
     
 </body>
 </html>

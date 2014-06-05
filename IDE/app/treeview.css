@@ -78,7 +78,7 @@
     left: -15px;
 }
 
-.treeview li.selected:before {
+.treeview li.selected:after {
     content: "";
 	z-index: -1;
     display: inline-block;

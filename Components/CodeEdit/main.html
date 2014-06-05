@@ -167,10 +167,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			if (event.ctrlKey && keyChar == 'Z') {
 				editor.undo();
+				textbehindelem.value = "";
+				event.preventDefault();
+				event.stopPropagation();
 			}
 			
 			if (event.ctrlKey && keyChar == 'Y') {
 				editor.redo();
+				textbehindelem.value = "";
+				event.preventDefault();
+				event.stopPropagation();
 			}
 			
 			setTimeout(function() {

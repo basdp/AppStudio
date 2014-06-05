@@ -26,6 +26,9 @@ var editor = {
 	},
 	
 	undo: function() {
+		console.log('undo');
+		console.log(editor.undoStack);
+		console.log(editor.redoStack);
 		if (editor.undoStack.length === 0) return;
 		
 		var u = editor.undoStack.pop();
@@ -58,6 +61,9 @@ var editor = {
 	},
 	
 	redo: function() {
+		console.log('redo');
+		console.log(editor.undoStack);
+		console.log(editor.redoStack);
 		if (editor.redoStack.length === 0) return;
 		
 		var u = editor.redoStack.pop();
@@ -66,13 +72,12 @@ var editor = {
 		} else if (u.type == 'full') {
 			editor.undoStack.push( { type: u.type, line: u.line, code: editor.lines.slice(0), caretX: editor.caretPosition.x, caretY: editor.caretPosition.y } );
 		}
-		
-		editor.caretPosition.x = u.caretX;
-		editor.caretPosition.y = u.caretY;
-		editor.positionCaret();
-		
+
 		if (u.type == 'line') {
 			editor.lines[u.line] = u.code;
+			editor.caretPosition.x = u.caretX;
+			editor.caretPosition.y = u.caretY;
+			editor.positionCaret();
 			editor.lineChanged(u.line);
 		} else if (u.type == 'full') {
 			editor.lines = u.code.slice(0);
@@ -84,6 +89,11 @@ var editor = {
 			for (var i = 0; i < lines.length; i++) {
 				lines[i].remove();
 			}
+
+			editor.caretPosition.x = u.caretX;
+			editor.caretPosition.y = u.caretY;
+			editor.positionCaret();
+
 			editor.render();
 		}
 	},
@@ -238,6 +248,8 @@ var editor = {
 	},
 		
 	deleteSelection: function() {
+		editor.undoAdd('full', 0, editor.lines.slice(0), editor.caretPosition.x, editor.caretPosition.y);
+
 		editor.pauseRendering = true;
 		var sb = editor.getSelectionBoundaries();
 		var sellength = editor.getSelectionLength();

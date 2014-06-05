@@ -7,9 +7,11 @@ function openToolWindow(url, width, height) {
 		show_in_taskbar: false,
 		frame: true, 
 		toolbar: false,
-		focus: true
+		focus: true,
+		show: false
 	});
 	win.on('loaded', function(){
+		win.show();
 	   	if (win.window.haveParent !== undefined) {
 			win.window.haveParent(window);
 		}
@@ -31,7 +33,7 @@ menuFile.append(new gui.MenuItem({ label: 'Documentation' }));
 menuFile.append(new gui.MenuItem({ label: 'API References' }));
 menuFile.append(new gui.MenuItem({ type: 'separator' }));
 menuFile.append(new gui.MenuItem({ label: 'Check for Updates' }));
-menuFile.append(new gui.MenuItem({ label: 'About' }));
+menuFile.append(new gui.MenuItem({ label: 'Exit', click: function() { window.close(); } }));
 
 var menuHelp = new gui.Menu();
 menuHelp.append(new gui.MenuItem({ label: 'Quick Start' }));

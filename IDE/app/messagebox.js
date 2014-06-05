@@ -7,9 +7,11 @@ function show_messagebox(text) {
 		show_in_taskbar: false,
 		frame: true, 
 		toolbar: false,
-		focus: true
+		focus: true,
+		show: false
 	});
 	win.on('loaded', function(){
+		win.show();
 		win.window.document.getElementById('text').textContent = text;
 	});
 

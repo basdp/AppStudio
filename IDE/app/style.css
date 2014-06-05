@@ -8,7 +8,7 @@ html, body {
     padding: 0;
     font-family: "Arial" sans-serif;
     font-size: 12px;
-    background: url(images/bg-light.png);
+    background: #3F3F3F;
     color: white;
 }
 
@@ -28,7 +28,7 @@ body {
 
 header {
     height: 62px;
-    background: url(images/bg-dark.png);
+    background: #272727;
     position: relative;
     z-index: 12;
     -webkit-user-select: none;
@@ -158,11 +158,13 @@ header #windowsmenubar li:hover {
 }
 
 .bg-light {
-    background-image: url(images/bg-light.png);
+    /*background-image: url(images/bg-light.png);*/
+	background: #3F3F3F;
 }
 
 .bg-dark {
-    background-image: url(images/bg-dark.png);
+    /*background-image: url(images/bg-dark.png);*/
+	background: #272727;
 }
 
 .toolbar-container {

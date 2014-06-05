@@ -1,0 +1,223 @@
+<html>
+<head>
+  <title>New File</title>
+	<meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="windowstyle.css" />
+	<link type="text/css" rel="stylesheet" href="treeview.css" />
+	<link type="text/css" rel="stylesheet" href="listview.css" />
+    
+    <script src="fullheight.js"></script>
+	<script src="treeview.js"></script>
+	<script src="listview.js"></script>
+	<script>
+        if (window.require !== undefined) {
+            var gui = require('nw.gui');
+            var win = gui.Window.get();            
+        }
+		
+		window.addEventListener('DOMContentLoaded', function(){
+			setFullHeightBottomMargin(document.getElementById('bottombar').getBoundingClientRect().height);
+		});
+		
+		var mainwin = null;
+		
+		function haveParent(theParent) {
+		   mainwin = theParent;
+		}
+		
+		function OK_click() {
+			var ret = mainwin.project_add_file(document.getElementById('input_name').value);
+			if (ret === true) {
+				window.close();
+			}
+		}
+    </script>
+	
+	<style>
+		.welcome {
+			font-weight: bold;
+			padding: 16px;
+		}
+
+		#projectbar {
+			box-sizing: border-box;
+			border-right: 2px solid #272727;
+			width: 30%;
+			float: left;
+		}
+
+		body > div > .title {
+			padding: 4px;
+			font-size: 10px;
+			text-transform: uppercase;
+			color: #e8e8e8;
+			background: #282828;
+		}
+
+		#templatelist {
+			width: 40%;	
+			box-sizing: border-box;
+			float: left;
+		}
+		
+		#templatelist .listview {
+			
+			padding: 2px;
+		}
+		
+		#infoview {
+			width: 30%;
+			box-sizing: border-box;
+			border-left: 2px solid #272727;
+			float: left;
+		}
+		
+		#infoview .info {
+			padding: 10px;
+		}
+		
+		#infoview .info .title {
+			font-weight: bold;
+		}
+		
+		#infoview .info p {
+			padding-top: 6px;	
+		}
+		
+		#bottombar {
+			height: 110px;	
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			border-top: 2px solid #272727;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+		
+		#bottombar label {
+			width: 150px;
+			display: inline-block;
+			margin-bottom: 4px;
+			text-align: right;
+			margin-right: 10px;
+		}
+		
+		#bottombar input:focus {
+			outline: none;
+		}
+		
+		#bottombar input {
+			width: calc(100% - 250px);
+			border: none;
+			background: rgba(255, 255, 255, 0.5);
+			padding: 2px;
+		}
+		
+		#bottombar .buttons {
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
+			height: 30px;
+		}
+		
+		button {
+			padding: 0 10px;
+			background: #272727;
+			color: white;
+			border: none;
+			border: 2px solid rgba(255, 255, 255, 0.17);
+			font-weight: bold;
+			font-size: 12px;
+			outline: none;
+			display: inline-block;
+			box-sizing: border-box;
+			line-height: 25px;
+			height: 28px;
+			position: relative;
+			vertical-align: middle;
+			-webkit-user-select: none;
+		}
+		
+		button:hover {
+			border-bottom: 2px solid #2F5A9C;
+		}
+		
+		button:active {
+			line-height: 27px;
+		}
+		
+		
+		#bottombar .buttons button {
+			margin-left: 10px;	
+		}
+		
+	</style>
+</head>
+<body>
+	<header style="display: none">
+        <div class="windowdrag"></div>
+        <div class="title">New Project</div>
+        <div class="windowbuttons">
+            <button class="close" onclick="win.close()"><img src="images/close.png"></button>
+            <button class="maximize" onclick="win.maximize()"><img src="images/maximize.png"></button>
+            <button class="minimize" onclick="win.minimize()"><img src="images/minimize.png"></button>
+        </div>
+    </header>
+	
+	<div class="welcome">
+		Choose a item type to add to your project:
+	</div>
+	
+	<div id="projectbar" class="full-height">
+        <div class="title">Categories</div>
+        <div class="projecttree">
+            <ul class="treeview">
+                <li class=""><img src="images/icons/file-project.png"> Main App <div class="subtext">(3 targets)</div>
+                    <ul>
+                        <li><img src="images/icons/folder.png"> Shutterbugs
+                            <ul>
+                                <li><img src="images/icons/file-js.png"> init.js</li>
+                                <li><img src="images/icons/file-js.png"> garble.js</li>
+                                <li><img src="images/icons/folder.png"> Images
+                                    <ul>
+                                        <li><img src="images/icons/file-unknown.png"> garble.png</li>
+                                        <li><img src="images/icons/file-unknown.png"> garble2.png</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+	
+	<div id="templatelist" class="full-height">
+        <div class="title">Templates</div>
+		<ul class="listview height32">
+			<li><img src="images/icons/file-project-large.png"/> JavaScript File</li>
+			<li><img src="images/icons/file-project-large.png"/> XML File</li>
+		</ul>
+	</div>
+	
+	<div id="infoview" class="full-height">
+        <div class="title">Information</div>
+		<div class="info">
+			<span class="title">JavaScript File</span>
+			<p class="text">An empty project. Useful for anything. Make it as awesome as you want.</p>
+		</div>
+	</div>
+	
+	<div id="bottombar">
+		<div>
+			<label for="name">Name:</label> <input name="name" id="input_name" />
+		</div>
+				
+		<div class="buttons">
+			<button onclick="OK_click()">OK</button>
+			<button onclick="window.close()">Cancel</button>
+		</div>
+	</div>
+</body>
+</html>

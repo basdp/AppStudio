@@ -240,7 +240,7 @@ header #windowsmenubar li:hover {
 
 #palettebar li#palettebarhandle:after {
     content: "";
-    display block;
+    display: block;
     position: absolute;
     top: 0;
     left: 0;

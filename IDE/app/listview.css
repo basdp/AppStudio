@@ -1,0 +1,44 @@
+.listview {
+    -webkit-user-select: none;
+    cursor: default;
+    list-style: none;
+}
+
+
+.listview li {
+    display: block;
+    line-height: 16px;
+    position: relative;
+	padding: 3px;
+	margin-bottom: 1px;
+}
+
+
+.listview li img {
+    margin-right: 2px;  
+    position: relative;
+    -webkit-user-drag: none;
+}
+
+.listview li.large > img {
+    top: 9px;
+}
+
+.listview li.selected {
+    background: #272727;
+}
+
+.listview.height32 li {
+	height: 32px;
+	position: relative;
+	padding-left: 40px;
+	line-height: 33px;
+}
+
+.listview.height32 li img {
+	width: 32px;
+	height: 32px;
+	top: 3px;
+	left: 2px;
+	position: absolute;
+}

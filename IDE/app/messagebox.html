@@ -1,0 +1,85 @@
+<html>
+<head>
+  <title>Messagebox</title>
+	<meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="windowstyle.css" />
+    
+    <script src="fullheight.js"></script>
+	<script>
+        if (window.require !== undefined) {
+            var gui = require('nw.gui');
+            var win = gui.Window.get();            
+        }
+		
+		window.addEventListener('DOMContentLoaded', function(){
+			setFullHeightBottomMargin(document.getElementById('bottombar').getBoundingClientRect().height);
+		});
+		
+		var mainwin = null;
+		
+		function haveParent(theParent) {
+		   mainwin = theParent;
+		}
+		
+		function OK_click() {
+			var ret = mainwin.new_project(document.getElementById('input_name').value, document.getElementById('input_location').value);
+			if (ret === true) {
+				window.close();
+			}
+		}
+    </script>
+	
+	<style>
+		.welcome {
+			font-weight: bold;
+			padding: 16px;
+			text-align: center;
+		}
+		
+		.buttons {
+			text-align: center;
+		}
+		
+		button {
+			padding: 0 10px;
+			background: #272727;
+			color: white;
+			border: none;
+			border: 2px solid rgba(255, 255, 255, 0.17);
+			font-weight: bold;
+			font-size: 12px;
+			outline: none;
+			display: inline-block;
+			box-sizing: border-box;
+			line-height: 25px;
+			height: 28px;
+			position: relative;
+			vertical-align: middle;
+			-webkit-user-select: none;
+		}
+		
+		button:hover {
+			border-bottom: 2px solid #2F5A9C;
+		}
+		
+		button:active {
+			line-height: 27px;
+		}
+		
+		
+		#bottombar .buttons button {
+			margin-left: 10px;	
+		}
+		
+	</style>
+</head>
+<body>	
+	<div class="welcome" id="text">
+		Text
+	</div>
+	
+	<div class="buttons">
+		<button onclick="window.close()">OK</button>
+	</div>
+</body>
+</html>

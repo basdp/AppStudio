@@ -40,7 +40,7 @@ editor.language = {
 	
 	keywords1: {
 		keywords: [ 'break', 'case', 'catch', 'continue', 'debugger', 'default', 'delete', 'do', 'else', 'finally', 'for', 'function', 'if', 
-		            'in', 'instanceof', 'new', 'return', 'switch', 'this', 'throw', 'try', 'typeof', 'var', 'void', 'while' ],
+		            'in', 'instanceof', 'new', 'return', 'switch', 'this', 'throw', 'try', 'typeof', 'var', 'void', 'while', 'true', 'false', 'null' ],
 		style: 'color: blue;'
 	},
 	

@@ -208,6 +208,21 @@ document.addEventListener('DOMContentLoaded', function() {
 				editor.selectionMouseMode = false;
 			}
 		};
+
+		editorelem.onmousedown = function(e) {
+			if (!editor.selectionMode) editor.deselect();
+			editor.caretPosition.y = editor.lines.length - 1;
+			editor.caretPosition.x = editor.lines[editor.lines.length - 1].length;
+			editor.selectionOrigin = { x: editor.caretPosition.x, y: editor.caretPosition.y };
+
+			editor.ensureCaretVisible();
+			editor.selectionMode = true;
+			editor.selectionMouseMode = true;
+			editor.editorElement.focus();
+			e.preventDefault();
+			e.stopPropagation();
+
+		};
 		
 		editor.render();
 		

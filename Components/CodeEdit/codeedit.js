@@ -169,6 +169,8 @@ var editor = {
 		x -= textLeft - 1;
 		if (x < 0) return;
 		
+		if (!editor.selectionMode) editor.deselect();
+
 		if (line != editor.caretPosition.y) {
 			var oldLine = editor.caretPosition.y;
 			editor.caretPosition.y = line;
@@ -186,9 +188,7 @@ var editor = {
 			editor.caretPosition.x -= Math.round(match.length / 4 * 3);
 			editor.caretPosition.x = Math.max(editor.caretPosition.x, 0);
 		}
-		
-		if (!editor.selectionMode) editor.deselect();
-		
+
 		editor.renderLine(editor.caretPosition.y);
 		
 		if (editor.intellisense.isOpen) {
@@ -289,7 +289,18 @@ var editor = {
 			
 			lineelem.onmousemove = function(e) {
 				if (editor.selectionMouseMode) {
+					var lastCaretPositionY = editor.caretPosition.y;
 					editor.selectInLine(line, e.x - editor.editorElement.getBoundingClientRect().left);
+					if (editor.caretPosition.y > lastCaretPositionY) {
+						for (var y = lastCaretPositionY; y < editor.caretPosition.y; y++) {
+							editor.renderLine(y);
+						}
+					} else {
+						for (var y = lastCaretPositionY; y > editor.caretPosition.y; y--) {
+							editor.renderLine(y);
+						}
+					}
+
 					editor.ensureCaretVisible();
 				}
 			};			

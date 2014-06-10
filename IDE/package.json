@@ -5,7 +5,7 @@
   "main": "app/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node_modules\\.bin\\nodewebkit"
+    "start": "node_modules\\.bin\\nodewebkit"
   },
   "window": {
     "toolbar": false,
@@ -19,6 +19,6 @@
     "grunt": "~0.4.5"
   },
   "dependencies": {
-    "nodewebkit": "~0.8.6-2"
+    "nodewebkit": "^0.9.2-4"
   }
 }

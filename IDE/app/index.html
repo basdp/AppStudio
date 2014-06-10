@@ -9,6 +9,12 @@
             var gui = require('nw.gui');
             var win = gui.Window.get();            
         }
+        
+        function MaximizeWorkaround() {
+            var nw = require('nw.gui').Window.get();
+            nw.resizeTo(screen.availWidth, screen.availHeight);
+            nw.moveTo(0, 0);   
+        }
     </script>
     <script src="fullheight.js"></script>
     <script src="treeview.js"></script>
@@ -27,7 +33,7 @@
         <div class="title">Main App *</div>
         <div class="windowbuttons">
             <button class="close" onclick="win.close()"><img src="images/close.png"></button>
-            <button class="maximize" onclick="win.maximize()"><img src="images/maximize.png"></button>
+            <button class="maximize" onclick="MaximizeWorkaround()"><img src="images/maximize.png"></button>
             <button class="minimize" onclick="win.minimize()"><img src="images/minimize.png"></button>
         </div>
         <div id="menu"></div>

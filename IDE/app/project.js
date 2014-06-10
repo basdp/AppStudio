@@ -45,18 +45,6 @@ function new_project(name, location) {
 	return true;
 }
 
-function get_icon_for_filename(filename) {
-	var ext = filename.substr(filename.lastIndexOf('.') + 1);
-	switch (ext.toLowerCase()) {
-		case "js": return 'images/icons/file-js.png';
-		case "xml": return 'images/icons/file-xml.png';
-		case "des": return 'images/icons/file-des.png';
-		case "proj": return 'images/icons/file-proj.png';
-		case "config": return 'images/icons/file-config.png';
-		default: return 'images/icons/file-unknown.png';
-	}
-}
-
 function add_file_to_tree(file, parentUl) {
 	var node = document.createElement('li');
 	var img = document.createElement('img');
@@ -67,6 +55,9 @@ function add_file_to_tree(file, parentUl) {
 	} else {
 		img.src = get_icon_for_filename(file.name);
 		node.onrightclick = project_open_file_contextmenu;
+		node.addEventListener('dblclick', function() {
+			project_open_file(file.location);
+		});
 	}
 	node.setAttribute('data-location', file.location);
 	node.appendChild(img);
@@ -136,7 +127,6 @@ function project_add_file(filename) {
 	return true;
 }
 
-var lastFolderLocation = '';
 function project_add_folder(filename) {
 	var fs = require('fs');
 	if (fs.existsSync(lastFolderLocation + "/" + filename)) {
@@ -187,10 +177,18 @@ function project_save() {
     chooser.click();  
 }
 
+function project_open_file(filename) {
+    var title = filename;
+    if (filename.indexOf('/') !== -1) {
+        title = filename.substr(filename.lastIndexOf('/') + 1);   
+    }
+	new_tab(filename, title);
+}
+
 var projectFolderAddMenu = new gui.Menu();
 projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Item...', click: function(e) { openToolWindow('newitem.html', 800, 500); } }));
 projectFolderAddMenu.append(new gui.MenuItem({ label: 'Existing Item...' }));
-projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Folder' }));
+projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Folder', click: function(e) { var folder = prompt("Folder name:"); if (folder) project_add_folder(folder); } }));
 
 var projectFolderMenu = new gui.Menu();
 projectFolderMenu.append(new gui.MenuItem({ label: 'New', submenu: projectFolderAddMenu }));
@@ -204,13 +202,16 @@ function project_open_folder_contextmenu(e) {
 	projectFolderMenu.popup(e.pageX, e.pageY);
 }
 
+var lastFileLocation = null;
+
 var projectFileMenu = new gui.Menu();
-projectFileMenu.append(new gui.MenuItem({ label: 'Open' }));
+projectFileMenu.append(new gui.MenuItem({ label: 'Open', click: function(e) { project_open_file(lastFileLocation); } }));
 projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
 projectFileMenu.append(new gui.MenuItem({ label: 'Delete' }));
 projectFileMenu.append(new gui.MenuItem({ label: 'Rename' }));
 projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
 projectFileMenu.append(new gui.MenuItem({ label: 'Properties' }));
 function project_open_file_contextmenu(e) {
+	lastFileLocation = e.target.getAttribute('data-location');
 	projectFileMenu.popup(e.pageX, e.pageY);
 }

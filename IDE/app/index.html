@@ -15,19 +15,26 @@
             nw.resizeTo(screen.availWidth, screen.availHeight);
             nw.moveTo(0, 0);   
         }
+        
+        window.addEventListener('DOMContentLoaded', function(){
+           //new_tab("appstudio://getting-started", "Getting Started", true, webbrowsereditor); 
+            new_tab("gettingstarted.html", "Getting Started", true, webbrowsereditor); 
+        });
     </script>
     <script src="fullheight.js"></script>
     <script src="treeview.js"></script>
     <script src="menus.js"></script>
     <script src="project.js"></script>
+	<script src="files.js"></script>
+	<script src="tabs.js"></script>
+	<script src="editors.js"></script>
 	<script src="messagebox.js"></script>
 
 </head>
 <body>
 	<input style="display:none;" id="fileOpenDialog" type="file" />
 	<input style="display:none;" id="fileSaveDialog" type="file" nwsaveas />
-    <div class="bg-dark line1 full-height"></div>
-    
+	
     <header>
         <div class="windowdrag"></div>
         <div class="title">Main App *</div>
@@ -50,22 +57,43 @@
     </header>
     
     <ul id="tabbar">
-        <li class="bg-light selected"><img src="images/icons/file-xml.png">Main.xml<div class="closebutton"></div></li>
-        <li class=""><img src="images/icons/file-js.png">Main.xml<div class="closebutton"></div></li>
-        <li class=""><img src="images/icons/file-des.png">Main.xml<div class="closebutton"></div></li>
     </ul>
     
     <div class="toolbar-container"><ul id="toolbar">
-        <li><img src="images/icons/save.png"></li>
-        <hr>
-        <li><img src="images/icons/cut.png"></li>
-        <li><img src="images/icons/copy.png"></li>
-        <li><img src="images/icons/paste.png"></li>
-        <hr>
-        <li><img src="images/icons/search.png"></li>
-        <li><img src="images/icons/info.png"></li>
-        <li><img src="images/icons/book.png"></li>
-        <li><img src="images/icons/comment.png"></li>
+		<div class="tools-js">
+			<li class="tools-save"><img src="images/icons/save.png"></li>
+			<hr>
+			<li><img src="images/icons/cut.png"></li>
+			<li><img src="images/icons/copy.png"></li>
+			<li><img src="images/icons/paste.png"></li>
+			<hr>
+			<li><img src="images/icons/search.png"></li>
+			<li><img src="images/icons/info.png"></li>
+			<li><img src="images/icons/book.png"></li>
+			<li><img src="images/icons/comment.png"></li>
+		</div>
+		
+		<div class="tools-xml">
+			<li><img src="images/icons/save.png"></li>
+			<hr>
+			<li><img src="images/icons/cut.png"></li>
+			<li><img src="images/icons/copy.png"></li>
+			<li><img src="images/icons/paste.png"></li>
+			<hr>
+			<li><img src="images/icons/search.png"></li>
+			<li><img src="images/icons/info.png"></li>
+			<li><img src="images/icons/book.png"></li>
+			<li><img src="images/icons/comment.png"></li>
+		</div>
+		
+		<div class="tools-web">
+			<li id="tools-web-back"><img src="images/icons/back.png"></li>
+			<li id="tools-web-forward"><img src="images/icons/forward.png"></li>
+			<hr>
+			<li id="tools-web-reload"><img src="images/icons/reload.png"></li>
+			<hr>
+			<input id="tools-web-addressbar" style="position: relative; top: 6px; width: calc(100% - 98px); color: #eee; outline: none; background: #272727; border: none; padding: 2px;">
+		</div>
     </ul></div>
     
     <ul id="palettebar" class="full-height">
@@ -82,11 +110,11 @@
     </ul>
     
     <div id="content">
-       <iframe src="../../Components/CodeEdit/main.html" style="width: 100%; height: 100%; border: none;"></iframe>
+       <div class="empty" id="emptycontent"></div>
     </div>
     
     <div class="projectbar-container"><div id="projectbar">
-        <div class="title bg-dark"><img src="images/sidebar-open.png" /> Project</div>
+        <div class="title"><img src="images/sidebar-open.png" /> Project</div>
         <div class="projecttree">
             <ul class="treeview">
                 <li class=""><img src="images/icons/file-project.png"> Main App <div class="subtext">(3 targets)</div>
@@ -107,14 +135,14 @@
                 </li>
             </ul>
         </div>
-        <div class="title bg-dark"><img src="images/sidebar-closed.png" /> Team</div>
+        <div class="title"><img src="images/sidebar-closed.png" /> Team</div>
         hoi
     </div></div>
     
     <div class="sidebar-container"><div id="sidebar">
-        <div class="title bg-dark"><img src="images/sidebar-open.png" /> Inspector</div>
+        <div class="title "><img src="images/sidebar-open.png" /> Inspector</div>
         hoi
-        <div class="title bg-dark"><img src="images/sidebar-closed.png" /> Documentation</div>
+        <div class="title"><img src="images/sidebar-closed.png" /> Documentation</div>
         hoi
     </div></div>
     

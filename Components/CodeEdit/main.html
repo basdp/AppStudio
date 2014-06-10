@@ -244,7 +244,22 @@ document.addEventListener('DOMContentLoaded', function() {
 		editor.editorElement.removeChild(span);
 		
 		editor.toggleCaret();
+    
 	});
+    
+    window.addEventListener('openlocation', function(e) {
+        var fs = e.detail.require('fs');
+        var content = fs.readFileSync(e.detail.location, { encoding: 'utf8' });
+        editor.lines = content.split('\n');
+        editor.render();
+
+        var save = e.detail.toolbar.querySelector('.tools-save');
+        save.addEventListener('click', function(e2) {
+            fs.writeFileSync(e.detail.location, editor.lines.join('\n'));
+        });
+
+    });
+    
 </script>
 
 </head>

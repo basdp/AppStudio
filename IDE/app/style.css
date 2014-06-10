@@ -129,6 +129,7 @@ header #windowsmenubar li:hover {
 #tabbar li.selected {
     font-weight: bold;
     color: white;
+	background: #3F3F3F;
 }
 
 #tabbar li > img {
@@ -190,6 +191,10 @@ header #windowsmenubar li:hover {
     box-sizing: border-box;
     -webkit-user-select: none;
     cursor: default;
+}
+
+#toolbar > div {
+    display: none;   
 }
 
 #toolbar li {
@@ -295,6 +300,20 @@ header #windowsmenubar li:hover {
     z-index: 10;
 }
 
+#content .empty {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: #272727;
+}
+
+#content iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
 .sidebar-container {
     top: 0;
     right: 0;
@@ -317,6 +336,7 @@ header #windowsmenubar li:hover {
     font-size: 10px;
     text-transform: uppercase;
     color: #e8e8e8;
+	background: #272727;
 }
 
 .projectbar-container {
@@ -341,6 +361,7 @@ header #windowsmenubar li:hover {
     font-size: 10px;
     text-transform: uppercase;
     color: #e8e8e8;
+	background: #272727;
 }
 
 .line1 {

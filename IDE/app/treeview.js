@@ -21,6 +21,7 @@ function activate_treeview(el) {
 			}
 			e.stopPropagation();
 		});
+        
 		expandableNode.addEventListener('mouseup', function(e) {
 			if (e.x < expandableNode.getBoundingClientRect().left) {
 				if (expandableNode.classList.contains("closed")) {

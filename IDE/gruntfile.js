@@ -61,6 +61,23 @@ module.exports = function(grunt) {
                 }]
             }
         },
+             
+        watch: {
+            less: {
+                files: ['<%= paths.app %>/**/*.less'],
+                tasks: ['less'],
+                options: {
+                    spawn: false,
+                },
+            },
+            copy: {
+                files: ['<%= paths.app %>/**/*.html', '<%= paths.app %>/**/*.js', '<%= paths.app %>/**/*.png'],
+                tasks: ['copy'],
+                options: {
+                    spawn: false,    
+                }
+            },
+        },
                      
         shell: {
             npm_start: {
@@ -76,6 +93,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shell');
 
     // Default task(s).

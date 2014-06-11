@@ -1,18 +1,14 @@
 var project = {
 	name: "",
 	location: "",
-	children: [
-		{name: 'test', children: []},
-		{name: 'test2', children: [
-			{name: 'test3', children: []},
-		]},
-		{name: 'test4', children: []},
-	],
+    dirty: false,
+    filename: null,
+	children: [],
 };
-
+        
 function new_project(name, location) {
 	var fs = require('fs');
-
+    
 	name = name.trim();
 	if (name == "") {
 		show_messagebox("Name cannot be empty");
@@ -35,12 +31,17 @@ function new_project(name, location) {
 		show_messagebox("Could not create directory " + location);
 		return false;
 	}
+    
+    location = fs.realpathSync(location);
 
 	project.name = name;
 	project.location = location;
+    project.filename = null;
 	project.children = [];
 
 	rebuild_project_treeview();
+    
+    project.dirty = true;
 
 	return true;
 }
@@ -124,6 +125,7 @@ function project_add_file(filename) {
 	foldernode.children.push({ name: filename, location: lastFolderLocation + "/" + filename, children: null });
 	
 	rebuild_project_treeview();
+    project.dirty = true;
 	return true;
 }
 
@@ -144,6 +146,7 @@ function project_add_folder(filename) {
 	foldernode.children.push({ name: filename, location: lastFolderLocation + "/" + filename, children: [] });
 	
 	rebuild_project_treeview();
+    project.dirty = true;
 	return true;
 }
 
@@ -154,27 +157,64 @@ function project_open() {
 		var fs = require('fs');
     	var json = fs.readFileSync(this.value);
 		window.project = JSON.parse(json);
+        project.dirty = false;
 		rebuild_project_treeview();
     }, false);
 
     chooser.click();  
 }
 
+function project_getJSON() {
+    var dat = JSON.stringify(project);
+    var proj = JSON.parse(dat);
+    delete proj.dirty;
+    dat = JSON.stringify(proj);
+    return dat;
+}
+
 function project_save() {
+	if (project.filename === null) {
+        project_save_as();
+    } else {
+        fs.writeFile(project.filename, project_getJSON(), function(err) {
+			if (err) {
+				show_messagebox("Could not write to file " + project.filename);
+			} else {
+                project.dirty = false;
+            }
+		});
+    }
+}
+
+function project_save_as() {
 	var chooser = document.getElementById("fileSaveDialog");
 	chooser.setAttribute("accept", ".proj");
     chooser.addEventListener("change", function(evt) {
 		var filename = this.value;
-    	var dat = JSON.stringify(project);
 		var fs = require('fs');
-		fs.writeFile(this.value, dat, function(err) {
+		fs.writeFile(this.value, project_getJSON(), function(err) {
 			if (err) {
 				show_messagebox("Could not write to file " + filename);
-			}
+			} else {
+                project.dirty = false;
+                project.filename = filename;
+            }
 		});
     }, false);
 
     chooser.click();  
+}
+
+function file_save() {
+    var editor = get_active_editor();
+    editor.contentWindow.dispatchEvent(new CustomEvent('save', { 'detail': { require: require } } ));
+}
+
+function file_save_as() {
+    var editor = get_active_editor();
+    var chooser = document.getElementById("fileSaveDialog");
+	
+    editor.contentWindow.dispatchEvent(new CustomEvent('saveas', { 'detail': { chooser: chooser, require: require } } ));
 }
 
 function project_open_file(filename) {
@@ -182,9 +222,17 @@ function project_open_file(filename) {
     if (filename.indexOf('/') !== -1) {
         title = filename.substr(filename.lastIndexOf('/') + 1);   
     }
-	new_tab(filename, title);
+    
+    if (tab_exists(filename)) {
+        select_tab(filename);
+    } else {
+        new_tab(filename, title);
+    }
 }
 
+
+if (window.require !== undefined) {
+    
 var projectFolderAddMenu = new gui.Menu();
 projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Item...', click: function(e) { openToolWindow('newitem.html', 800, 500); } }));
 projectFolderAddMenu.append(new gui.MenuItem({ label: 'Existing Item...' }));
@@ -214,4 +262,6 @@ projectFileMenu.append(new gui.MenuItem({ label: 'Properties' }));
 function project_open_file_contextmenu(e) {
 	lastFileLocation = e.target.getAttribute('data-location');
 	projectFileMenu.popup(e.pageX, e.pageY);
+}
+    
 }

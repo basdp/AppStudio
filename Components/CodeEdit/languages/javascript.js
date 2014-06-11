@@ -1,6 +1,7 @@
 editor.language = {
 
 	name: "javascript",
+    extension: '.js',
 	
 	indentstring: "\t",
 	autoIndent: function() {

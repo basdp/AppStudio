@@ -5,6 +5,8 @@
     -webkit-user-select: none;
     cursor: default;
 	z-index: 10;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .treeview ul {
@@ -60,6 +62,14 @@
     left: -15px;
 }
 
+.treeview li > ul:empty:after {
+    content: "(empty)";
+    font-size: 10px;
+    color: #ccc;
+    margin-left: 2px;
+    
+}
+
 .treeview li.large > ul:before {
     top: 12px;
 }
@@ -82,10 +92,18 @@
     content: "";
 	z-index: -1;
     display: inline-block;
-    background: #272727;
-    width: 100%;
+    background: #BDBDBD;
+    width: 1500px;
     height: 20px;
     position: absolute;
     top: 1px;
-    left: -3px;
+    left: -500px;
+}
+
+.treeview li.selected::first-line {
+    color: black;
+}
+
+.treeview li.selected > img:first-child {
+    //-webkit-filter: invert(100%);
 }

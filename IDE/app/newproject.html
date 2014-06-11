@@ -58,11 +58,6 @@
 			float: left;
 		}
 		
-		#templatelist .listview {
-			
-			padding: 2px;
-		}
-		
 		#infoview {
 			width: 30%;
 			box-sizing: border-box;
@@ -152,6 +147,11 @@
 			margin-left: 10px;	
 		}
 		
+        .projecttree .treeview,
+        #templatelist .listview {
+            height: calc(100% - 4px - 20px);
+        }
+        
 	</style>
 </head>
 <body>
@@ -195,12 +195,14 @@
 	
 	<div id="templatelist" class="full-height">
         <div class="title">Templates</div>
-		<ul class="listview height32">
-			<li><img src="images/icons/file-project-large.png"/> Empty Project</li>
-			<li><img src="images/icons/file-project-large.png"/> Empty Project</li>
-			<li><img src="images/icons/file-project-large.png"/> Empty Project</li>
-			<li><img src="images/icons/file-project-large.png"/> Empty Project</li>
-		</ul>
+        <div style="padding: 2px;">
+            <ul class="listview height32">
+                <li><img src="images/icons/file-project-large.png"/> Empty Project</li>
+                <li><img src="images/icons/file-project-large.png"/> Empty Project</li>
+                <li><img src="images/icons/file-project-large.png"/> Empty Project</li>
+                <li><img src="images/icons/file-project-large.png"/> Empty Project</li>
+            </ul>
+        </div>
 	</div>
 	
 	<div id="infoview" class="full-height">

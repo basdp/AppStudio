@@ -1,7 +1,8 @@
 editor.language = {
 
 	name: "xml",
-	
+    extension: '.xml',
+    
 	indentstring: "\t",
 	autoIndent: function() {
 		if (editor.caretPosition.y == 0) return;

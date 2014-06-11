@@ -1,3 +1,12 @@
+function get_active_editor() {
+    var editor = null;
+    var alliframes = content.querySelectorAll("iframe");
+    Array.prototype.forEach.call(alliframes, function(el, i) {
+        if (el.style.display != 'none') editor = el;
+    });
+    return editor;
+}
+
 function new_tab(filename, title, open, editor) {
 	open = open === undefined ? true : open;
 	editor = editor === undefined ? get_editor_for_filename(filename) : editor;
@@ -48,18 +57,23 @@ function new_tab(filename, title, open, editor) {
 	}
 	
 	tab.addEventListener('mousedown', selecttab);
+    tab.select = selecttab;
+    tab.iframe = iframe;
 	
 	close.addEventListener('click', function() {
 		var previoustab = null;
 		if (tab.classList.contains('selected')) {
-			previoustab = tab.previousSibling;
+			previoustab = tab.previousElementSibling;
 			document.getElementById('emptycontent').style.display = "block";
 		}
 		tabbar.removeChild(tab);
 		content.removeChild(iframe);
 		if (previoustab) {
 			previoustab.dispatchEvent(new Event('mousedown'));
-		}
+		} else {
+            var toolbar = document.querySelector("#toolbar div." + editor.toolbar);
+            if (toolbar) toolbar.style.display = "none";
+        }
 	});
 	
 	tabbar.appendChild(tab);
@@ -70,4 +84,27 @@ function new_tab(filename, title, open, editor) {
     iframe.contentWindow.addEventListener('DOMContentLoaded', function(){
         iframe.contentWindow.dispatchEvent(new CustomEvent('openlocation', { 'detail': { 'location': filename, 'require': require, 'toolbar': document.querySelector("#toolbar div." + editor.toolbar) } } ));
     });
+}
+
+function get_tab(filename) {
+	var tabbar = document.getElementById('tabbar');
+    var tab = null;
+    var alltabs = tabbar.querySelectorAll("li");
+    Array.prototype.forEach.call(alltabs, function(el, i) {
+        if (el.getAttribute('data-filename') == filename) tab = el;
+    });
+    return tab;
+}
+
+function tab_exists(filename) {
+    return !(get_tab(filename) === null);   
+}
+
+function select_tab(filename) {
+    var tab = get_tab(filename);
+    if (tab === null) return false;
+    
+    tab.select(); 
+    
+    return true;
 }

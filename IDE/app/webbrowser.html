@@ -10,43 +10,45 @@
 			}
 		</style>
 		<script>
-			window.addEventListener('DOMContentLoaded', function(){
-				var addressbar = window.parent.document.getElementById('tools-web-addressbar');
-				var back = window.parent.document.getElementById('tools-web-back');
-				var forward = window.parent.document.getElementById('tools-web-forward');
-				var reload = window.parent.document.getElementById('tools-web-reload');
-				var browser = document.getElementById('browser');
-				
-				document.getElementById('browser').addEventListener('load', function(e) {
-					var url = e.target.contentWindow.location.href;
-					addressbar.value = url;
-				});
-				
-				addressbar.addEventListener('keydown', function(e) {
-					if (e.keyCode == 13) {
-						var url = addressbar.value;
-						if (url.indexOf('://') === -1) {
-							url = 'http://' + url;
-						}
-						browser.src = url;
-					}
-				});
-				
-				addressbar.addEventListener('click', function(e) {
-					addressbar.select();
-				});
-				
-				reload.addEventListener('click', function(e) {
-					browser.contentWindow.location.reload(true);
-				});
-				
-				back.addEventListener('click', function(e) {
-					browser.contentWindow.history.back();
-				});
-				
-				forward.addEventListener('click', function(e) {
-					browser.contentWindow.history.forward();
-				});                
+			window.addEventListener('DOMContentLoaded', function() {
+                if (window.location.ancestorOrigins[0] !== 'null') {
+                    var addressbar = window.parent.document.getElementById('tools-web-addressbar');
+                    var back = window.parent.document.getElementById('tools-web-back');
+                    var forward = window.parent.document.getElementById('tools-web-forward');
+                    var reload = window.parent.document.getElementById('tools-web-reload');
+                    var browser = document.getElementById('browser');
+
+                    document.getElementById('browser').addEventListener('load', function(e) {
+                        var url = e.target.contentWindow.location.href;
+                        addressbar.value = url;
+                    });
+
+                    addressbar.addEventListener('keydown', function(e) {
+                        if (e.keyCode == 13) {
+                            var url = addressbar.value;
+                            if (url.indexOf('://') === -1) {
+                                url = 'http://' + url;
+                            }
+                            browser.src = url;
+                        }
+                    });
+
+                    addressbar.addEventListener('click', function(e) {
+                        addressbar.select();
+                    });
+
+                    reload.addEventListener('click', function(e) {
+                        browser.contentWindow.location.reload(true);
+                    });
+
+                    back.addEventListener('click', function(e) {
+                        browser.contentWindow.history.back();
+                    });
+
+                    forward.addEventListener('click', function(e) {
+                        browser.contentWindow.history.forward();
+                    });   
+                }
 
 			});
             

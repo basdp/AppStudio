@@ -1,6 +1,7 @@
 editor.language = {
 
 	name: "text",
+    extension: '.txt',
 	
 	indentstring: "\t",
 	autoIndent: function() {

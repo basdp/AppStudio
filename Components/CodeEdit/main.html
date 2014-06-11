@@ -250,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('openlocation', function(e) {
         var fs = e.detail.require('fs');
         var content = fs.readFileSync(e.detail.location, { encoding: 'utf8' });
+        editor.filename = e.detail.location;
         editor.lines = content.split('\n');
         editor.render();
 
@@ -259,6 +260,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     });
+    
+    window.addEventListener('save', function(e) {
+		var fs = e.detail.require('fs');
+        fs.writeFileSync(editor.filename, editor.lines.join('\n'));
+    });
+    
+    window.addEventListener('saveas', function(e) {
+        var chooser = e.detail.chooser;
+        chooser.setAttribute("accept", editor.language.extension);
+        chooser.addEventListener("change", function(evt) {
+		var filename = this.value;
+		var fs = e.detail.require('fs');
+		fs.writeFile(filename, editor.lines.join('\n'), function(err) {
+			if (err) {
+				show_messagebox("Could not write to file " + filename);
+			} else {
+                //editor.filename = filename;
+            }
+		});
+    }, false);
+
+    chooser.click();
+    });
+    
+    window.isDirty = function() {
+        return true;
+    }
     
 </script>
 

@@ -19,6 +19,8 @@ function openToolWindow(url, width, height) {
 }
 
 // Create an empty menu
+if (window.require !== undefined) {
+    
 var menu = new gui.Menu();
 menu.append(new gui.MenuItem({ label: 'Item A' }));
 menu.append(new gui.MenuItem({ label: 'Item B' }));
@@ -31,6 +33,8 @@ menuFileNew.append(new gui.MenuItem({ label: 'Project', click: function() { open
 menuFile.append(new gui.MenuItem({ label: 'New', submenu: menuFileNew }));
 menuFile.append(new gui.MenuItem({ label: 'Open Project...', click: function() { project_open(); } }));
 menuFile.append(new gui.MenuItem({ label: 'Save Project', click: function() { project_save(); } }));
+menuFile.append(new gui.MenuItem({ label: 'Save Current File', click: function() { file_save(); } }));
+menuFile.append(new gui.MenuItem({ label: 'Save Current File As...', click: function() { file_save_as(); } }));
 menuFile.append(new gui.MenuItem({ type: 'separator' }));
 menuFile.append(new gui.MenuItem({ label: 'Check for Updates' }));
 menuFile.append(new gui.MenuItem({ label: 'Exit', click: function() { window.close(); } }));
@@ -51,4 +55,6 @@ function openmenu(name, el) {
     if (name == "help") menu = menuHelp;
     if (name == "file") menu = menuFile;
     menu.popup(rect.left, rect.bottom);
+}
+
 }

@@ -7,16 +7,38 @@
         if (window.require !== undefined) {
             var gui = require('nw.gui');
             var win = gui.Window.get();            
-        }
         
-        function MaximizeWorkaround() {
-            var nw = require('nw.gui').Window.get();
-            nw.resizeTo(screen.availWidth, screen.availHeight);
-            nw.moveTo(0, 0);   
-        }
-        
+            function MaximizeWorkaround() {
+                var nw = require('nw.gui').Window.get();
+                nw.resizeTo(screen.availWidth, screen.availHeight);
+                nw.moveTo(0, 0);   
+            }
+
+            gui.Window.get().on('close', function() {
+                var tabbar = document.getElementById('tabbar');
+                var alltabs = tabbar.querySelectorAll("li");
+                Array.prototype.forEach.call(alltabs, function(el, i) {
+                    if (el.iframe.contentWindow.isDirty && el.iframe.contentWindow.isDirty()) {
+                        select_tab(el.getAttribute('data-filename'));
+                        var r = confirm(el.getAttribute('data-filename') + ' is not saved, do you want to save?');
+                        if (r) {
+                            el.iframe.contentWindow.dispatchEvent(new CustomEvent('save', { 'detail': { require: require } } ));                        
+                        }
+                    }
+                });
+
+                if (project.dirty) {
+                    var r = confirm('Project \'' + project.name + '\' is not saved, do you want to save?');
+                    if (r) {
+                        project_save();
+                    }
+                }
+
+                this.close(true);
+            });
+        } 
         window.addEventListener('DOMContentLoaded', function(){
-           //new_tab("appstudio://getting-started", "Getting Started", true, webbrowsereditor); 
+            //new_tab("appstudio://getting-started", "Getting Started", true, webbrowsereditor); 
             new_tab("gettingstarted.html", "Getting Started", true, webbrowsereditor); 
         });
     </script>
@@ -91,7 +113,7 @@
 			<hr>
 			<li id="tools-web-reload"><img src="images/icons/reload.png"></li>
 			<hr>
-			<input id="tools-web-addressbar" style="position: relative; top: 6px; width: calc(100% - 98px); color: #eee; outline: none; background: #272727; border: none; padding: 2px;">
+			<input id="tools-web-addressbar" />
 		</div>
     </ul></div>
     
@@ -115,32 +137,46 @@
     <div class="projectbar-container"><div id="projectbar">
         <div class="title"><img src="images/sidebar-open.png" /> Project</div>
         <div class="projecttree">
-            <ul class="treeview">
-                <li class=""><img src="images/icons/file-project.png"> Main App <div class="subtext">(3 targets)</div>
-                    <ul>
-                        <li><img src="images/icons/folder.png"> Shutterbugs
-                            <ul>
-                                <li><img src="images/icons/file-js.png"> init.js</li>
-                                <li><img src="images/icons/file-js.png"> garble.js</li>
-                                <li><img src="images/icons/folder.png"> Images
-                                    <ul>
-                                        <li><img src="images/icons/file-unknown.png"> garble.png</li>
-                                        <li><img src="images/icons/file-unknown.png"> garble2.png</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+            <ul class="treeview" style="height: 200px;"></ul>
         </div>
         <div class="title"><img src="images/sidebar-closed.png" /> Team</div>
         hoi
     </div></div>
     
     <div class="sidebar-container"><div id="sidebar">
-        <div class="title "><img src="images/sidebar-open.png" /> Inspector</div>
-        hoi
+        <div class="title"><img src="images/sidebar-open.png" /> Inspector</div>
+        <div id="inspector">
+            <div class="name">
+                <div class="icon"><img src="images/grid.png"/></div>
+                <div class="row"><label for="name">Name</label><input name="name" /></div>
+                <div class="row"><label for="type">Type</label><span>Grid</span></div>
+            </div>
+            <div class="scrollarea" style="height: 200px">
+                <div class="section">
+                    <div class="name">Layout</div>
+                    <div class="row"><label for="name">Width</label><input name="name" /></div>
+                    <div class="row"><label for="name">Height</label><input name="name" /></div>
+                    <div class="row"><label for="name">Margin</label>
+                        <span class="iconinput"><img src="images/arrow-1-up.png"><input name="name" class="half" /></span>
+                        <span class="iconinput"><img src="images/arrow-1-right.png"><input name="name" class="half" /></span>
+                    </div>
+                    <div class="row"><label for="name">&nbsp;</label>
+                        <span class="iconinput"><img src="images/arrow-1-down.png"><input name="name" class="half" /></span>
+                        <span class="iconinput"><img src="images/arrow-1-left.png"><input name="name" class="half" /></span>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="name">Dimensions</div>
+                    <div class="row"><label for="name">Name</label><input name="name" /></div>
+                    <div class="row"><label for="name">Name</label><input name="name" /></div>
+                </div>
+                <div class="section">
+                    <div class="name">Dimensions</div>
+                    <div class="row"><label for="name">Name</label><input name="name" /></div>
+                    <div class="row"><label for="name">Name</label><input name="name" /></div>
+                </div>
+            </div>
+        </div>
         <div class="title"><img src="images/sidebar-closed.png" /> Documentation</div>
         hoi
     </div></div>

@@ -41,6 +41,7 @@ module.exports = function(grunt) {
                         src: [
                             '*.{ico,png,txt,xml,html}',
                             'images/**/*.{gif,webp,jpg,png}',
+                            'fonts/**/*.woff',
                             '*.js',
                         ]
                     },
@@ -60,6 +61,13 @@ module.exports = function(grunt) {
                 }]
             }
         },
+                     
+        shell: {
+            npm_start: {
+                options: { stdout: true },
+                command: 'npm start'
+            },
+        },
 
     });
 
@@ -68,8 +76,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-shell');
 
     // Default task(s).
     grunt.registerTask('default', ['clean', 'copy', 'less']);
+    grunt.registerTask('run', ['default', 'shell:npm_start']);
 
 };

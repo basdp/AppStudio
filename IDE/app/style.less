@@ -1,3 +1,5 @@
+@import 'variables.less';
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +10,7 @@ html, body {
     padding: 0;
     font-family: "Arial" sans-serif;
     font-size: 12px;
-    background: #3F3F3F;
+    background: @background-light;
     color: white;
 }
 
@@ -28,7 +30,7 @@ body {
 
 header {
     height: 62px;
-    background: #272727;
+    background: @background-dark;
     position: relative;
     z-index: 12;
     -webkit-user-select: none;
@@ -129,7 +131,7 @@ header #windowsmenubar li:hover {
 #tabbar li.selected {
     font-weight: bold;
     color: white;
-	background: #3F3F3F;
+	background: @background-light;
 }
 
 #tabbar li > img {
@@ -158,16 +160,6 @@ header #windowsmenubar li:hover {
     -webkit-filter: invert(100%);
 }
 
-.bg-light {
-    /*background-image: url(images/bg-light.png);*/
-	background: #3F3F3F;
-}
-
-.bg-dark {
-    /*background-image: url(images/bg-dark.png);*/
-	background: #272727;
-}
-
 .toolbar-container {
     height: 32px;
     top: 62px;
@@ -185,7 +177,7 @@ header #windowsmenubar li:hover {
     display: block;
     height: 34px;
     padding-left: 8px;
-    border-bottom: 1px solid #272727;
+    border-bottom: 1px solid @background-dark;
     width: 100%;
     z-index: 11;
     box-sizing: border-box;
@@ -229,7 +221,7 @@ header #windowsmenubar li:hover {
     top: 96px;
     left: 266px;
     position: absolute;
-    border-right: 1px solid #272727;
+    border-right: 1px solid @background-dark;
     width: 44px;
     z-index: 11;
     -webkit-user-select: none;
@@ -237,7 +229,7 @@ header #windowsmenubar li:hover {
 }
 
 #palettebar li#palettebarhandle {
-    background: #272727;
+    background: @background-dark;
     height: 10px;
     padding: 0; 
     margin: 0;
@@ -305,7 +297,7 @@ header #windowsmenubar li:hover {
 	display: block;
 	width: 100%;
 	height: 100%;
-	background: #272727;
+	background: @background-dark;
 }
 
 #content iframe {
@@ -327,7 +319,7 @@ header #windowsmenubar li:hover {
 }
 
 #sidebar {
-    border-left: 2px solid #272727;
+    border-left: 2px solid @background-dark;
     height: 100%;
 }
 
@@ -336,7 +328,7 @@ header #windowsmenubar li:hover {
     font-size: 10px;
     text-transform: uppercase;
     color: #e8e8e8;
-	background: #272727;
+	background: @background-dark;
 }
 
 .projectbar-container {
@@ -352,7 +344,7 @@ header #windowsmenubar li:hover {
 }
 
 #projectbar {
-    border-right: 2px solid #272727;
+    border-right: 2px solid @background-dark;
     height: 100%;
 }
 
@@ -361,7 +353,7 @@ header #windowsmenubar li:hover {
     font-size: 10px;
     text-transform: uppercase;
     color: #e8e8e8;
-	background: #272727;
+	background: @background-dark;
 }
 
 .line1 {

@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                         cwd: '<%= paths.app %>',
                         dest: '<%= paths.dist %>',
                         src: [
-                            '*.{ico,png,txt,xml,html}',
+                            '*.{ico,png,txt,xml,html,css}',
                             'images/**/*.{gif,webp,jpg,png}',
                             'fonts/**/*.woff',
                             '*.js',
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
                 },
             },
             copy: {
-                files: ['<%= paths.app %>/**/*.html', '<%= paths.app %>/**/*.js', '<%= paths.app %>/**/*.png'],
+                files: ['<%= paths.app %>/**/*.html', '<%= paths.app %>/**/*.{js,css}', '<%= paths.app %>/**/*.png'],
                 tasks: ['copy'],
                 options: {
                     spawn: false,    

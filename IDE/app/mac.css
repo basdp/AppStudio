@@ -1,0 +1,47 @@
+#windowsmenubar {
+    display: none;
+}
+
+.windowbuttons {
+    left: 6px;
+    top: 4px;
+    right: auto;
+}
+
+.windowbuttons button {
+    float: left;
+    width: 13px;
+    height: 13px;
+    border-radius: 5px;
+    margin-right: 6px;
+    background-clip: border-box;
+    overflow: hidden;
+}
+
+.windowbuttons button img {
+    display: none;
+}
+
+.windowbuttons button.close {
+    background: #fa614f;
+    border: 1px solid #b24538;
+}
+
+.windowbuttons button.maximize {
+    background: #ffc107;
+    border: 1px solid #b38705;
+}
+
+.windowbuttons button.minimize {
+    background: #0cd031;
+    border: 1px solid #0aad28;
+}
+
+.windowbuttons button:hover:after {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: white;
+    opacity: 0.5;
+}

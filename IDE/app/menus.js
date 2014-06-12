@@ -56,5 +56,18 @@ function openmenu(name, el) {
     if (name == "file") menu = menuFile;
     menu.popup(rect.left, rect.bottom);
 }
+    
+
+if (process.platform === 'darwin') {
+    var menubar = new gui.Menu({ type: 'menubar' });
+    menubar.append(new gui.MenuItem({ label: 'File', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Edit', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Project', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Build', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Team', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Tools', submenu: menuFile }));
+    menubar.append(new gui.MenuItem({ label: 'Help', submenu: menuHelp }));
+    gui.Window.get().menu = menubar;
+}
 
 }

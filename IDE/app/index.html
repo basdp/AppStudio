@@ -36,6 +36,14 @@
 
                 this.close(true);
             });
+			
+			if (process.platform === 'darwin') {
+				var fileref=document.createElement("link");
+				fileref.setAttribute("rel", "stylesheet");
+				fileref.setAttribute("type", "text/css");
+				fileref.setAttribute("href", 'mac.css');
+				document.getElementsByTagName("head")[0].appendChild(fileref);
+			}
         } 
         window.addEventListener('DOMContentLoaded', function(){
             //new_tab("appstudio://getting-started", "Getting Started", true, webbrowsereditor); 

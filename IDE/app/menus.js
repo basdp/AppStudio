@@ -1,10 +1,17 @@
+function dialogShowInTaskbar() {
+    if (process.platform === 'darwin') {
+        return true; // workaround
+    }
+    return false;
+}
+
 function openToolWindow(url, width, height) {
 	var win = gui.Window.open(url, { 
 		position: 'center', 
 		width: width, 
 		height: height,
 		resizable: false,
-		show_in_taskbar: false,
+		show_in_taskbar: dialogShowInTaskbar(),
 		frame: true, 
 		toolbar: false,
 		focus: true,

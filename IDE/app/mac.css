@@ -1,3 +1,7 @@
+* {
+    font-family: "Lucida Grande";
+}
+
 #windowsmenubar {
     display: none;
 }

@@ -21,6 +21,7 @@
                     document.getElementById('browser').addEventListener('load', function(e) {
                         var url = e.target.contentWindow.location.href;
                         addressbar.value = url;
+                        tabmanager.setTitle(e.target.contentWindow.document.title);
                     });
 
                     addressbar.addEventListener('keydown', function(e) {

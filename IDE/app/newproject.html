@@ -12,9 +12,22 @@
             var gui = require('nw.gui');
             var win = gui.Window.get();            
         }
-		
+        
+		var updateLoc = function() {
+            var path = require('path');
+            var loc = input_location.value;
+            if (loc[loc.length - 1] !== path.sep) loc += path.sep;
+            loc += input_name.value;
+            endlocation.textContent = loc;
+        } 
+        
 		window.addEventListener('DOMContentLoaded', function(){
-			setFullHeightBottomMargin(document.getElementById('bottombar').getBoundingClientRect().height);
+			setFullHeightBottomMargin(document.getElementById('bottombar').getBoundingClientRect().height);     
+            
+            input_location.addEventListener("change", function(evt) { updateLoc(); });
+            input_name.addEventListener("change", function(evt) { updateLoc(); });
+            input_location.addEventListener("keyup", function(evt) { updateLoc(); });
+            input_name.addEventListener("keyup", function(evt) { updateLoc(); });
 		});
 		
 		var mainwin = null;
@@ -29,6 +42,17 @@
 				window.close();
 			}
 		}
+        
+        function selectlocation() {
+            var chooser = directorySelectDialog;
+            chooser.setAttribute('title', "hoi");
+            chooser.addEventListener("change", function(evt) {
+                input_location.value = this.value;
+                updateLoc();
+            });
+            chooser.click();
+        }
+                
     </script>
 	
 	<style>
@@ -105,6 +129,7 @@
 			border: none;
 			background: rgba(255, 255, 255, 0.5);
 			padding: 2px;
+            margin-bottom: 4px;
 		}
 		
 		#bottombar .buttons {
@@ -123,6 +148,15 @@
             height: calc(100% - 4px - 20px);
         }
         
+        #bottombar input + button {
+            height: 21px;
+            line-height: 20px;
+            display: inline-block;
+            position: relative;
+            top: -3px;
+            margin-left: 4px;
+        }
+        
 	</style>
 </head>
 <body>
@@ -136,6 +170,8 @@
         </div>
     </header>
 	
+    <input style="display:none;" id="directorySelectDialog" type="file" nwdirectory />
+    
 	<div class="welcome">
 		Choose a template for your new project:
 	</div>
@@ -190,7 +226,10 @@
                 <label for="name">Project Name:</label> <input name="name" id="input_name" />
             </div>
             <div>
-                <label for="location">Location:</label> <input name="location" id="input_location" />
+                <label for="location">Location:</label> <input name="location" id="input_location" /><button onclick="selectlocation()">...</button>
+            </div>
+            <div>
+                <label for="endlocation">Project Name:</label> <span id="endlocation"></span>
             </div>
 
             <div class="buttons">

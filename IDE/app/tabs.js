@@ -21,8 +21,10 @@ function new_tab(filename, title, open, editor) {
 	close.addEventListener('mousedown', function(e) {
 		e.stopPropagation();
 	});
+    var titlenode = document.createTextNode(title);
+    
 	tab.appendChild(icon);
-	tab.appendChild(document.createTextNode(title));
+	tab.appendChild(titlenode);
 	tab.appendChild(close);
 	
 	tab.setAttribute('data-filename', filename);
@@ -82,6 +84,24 @@ function new_tab(filename, title, open, editor) {
 	}
     
     iframe.contentWindow.addEventListener('DOMContentLoaded', function(){
+        iframe.contentWindow.tabmanager = {
+            require: require,
+            toolbar: document.querySelector("#toolbar div." + editor.toolbar),
+            editor: editor,
+            
+            setTitle: function(title) {
+                titlenode.textContent = title;
+            },
+            
+            setDirty: function(isdirty) {
+                if (isdirty) {
+                    tab.classList.add('dirty');
+                } else {
+                    tab.classList.remove('dirty');
+                }
+            },
+        };
+        iframe.contentWindow.dispatchEvent(new CustomEvent('tabmanageravailable', { 'detail': { 'require': require } } ));
         iframe.contentWindow.dispatchEvent(new CustomEvent('openlocation', { 'detail': { 'location': filename, 'require': require, 'toolbar': document.querySelector("#toolbar div." + editor.toolbar) } } ));
     });
 }

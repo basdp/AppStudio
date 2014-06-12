@@ -14,12 +14,22 @@ function new_project(name, location) {
 		show_messagebox("Name cannot be empty");
 		return false;	
 	}
+    
+    if (!/^[a-zA-Z0-9\.\-\_\ ]+$/.test(name)) {
+        show_messagebox("Name contains illegal characters.\nPlease only use alphanumeric characters, space, dot (.), dash (-) and underscore (_)");
+        return false;
+    }
 	
 	location = location.trim();
 	if (location == "") {
 		show_messagebox("Location cannot be empty");
 		return false;	
 	}
+    
+    if (!/^[a-zA-Z0-9\.\-\_]+$/.test(location)) {
+        show_messagebox("Location contains illegal characters.\nPlease only use alphanumeric characters,  dot (.), dash (-) and underscore (_)");
+        return false;
+    }
 	
 	if (fs.existsSync(location)) {
 		show_messagebox(location + " already exists!");

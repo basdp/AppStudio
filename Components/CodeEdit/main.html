@@ -108,24 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				if (!editor.selectionMode) editor.deselect();
 			}
-			
-			if (event.keyCode == 8 /* backspace */) {
-				editor.backspace();
-			}
-			
-			if (event.keyCode == 46 /* delete */) {
-				editor.del();
-			}
-			
-			if (event.keyCode == 13 /* return */) {
-				editor.newline();
-			}
-			
-			if (event.keyCode == 9 /* tab */) { 
-				event.preventDefault();			
-				editor.insert("\t");
-			} 
-			
+			            
 			if (event.keyCode == 36 /* home */) {
 				editor.home();
 				
@@ -155,7 +138,27 @@ document.addEventListener('DOMContentLoaded', function() {
 				editor.intellisense.request();
 				editor.skipNextInput = true;
 			}
+            
+            // modification commands
+            tabmanager.setDirty(true);
+            
+			if (event.keyCode == 8 /* backspace */) {
+				editor.backspace();
+			}
 			
+			if (event.keyCode == 46 /* delete */) {
+				editor.del();
+			}
+			
+			if (event.keyCode == 13 /* return */) {
+				editor.newline();
+			}
+			
+			if (event.keyCode == 9 /* tab */) { 
+				event.preventDefault();			
+				editor.insert("\t");
+			} 
+						
 			if (event.ctrlKey && keyChar == 'V') {
 				(function(autoIndentval) {
 				editor.enableAutoIndent = false;
@@ -191,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		
 		textbehindelem.oninput = function(event) {
+            tabmanager.setDirty(true);
 			if (!editor.skipNextInput) {
 				if (textbehindelem.value.length > 0) {
 					if (editor.getSelectionLength() > 0) {
@@ -257,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var save = e.detail.toolbar.querySelector('.tools-save');
         save.addEventListener('click', function(e2) {
             fs.writeFileSync(e.detail.location, editor.lines.join('\n'));
+            tabmanager.setDirty(false);
         });
 
     });
@@ -264,30 +269,27 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('save', function(e) {
 		var fs = e.detail.require('fs');
         fs.writeFileSync(editor.filename, editor.lines.join('\n'));
+        tabmanager.setDirty(false);
     });
     
     window.addEventListener('saveas', function(e) {
         var chooser = e.detail.chooser;
         chooser.setAttribute("accept", editor.language.extension);
         chooser.addEventListener("change", function(evt) {
-		var filename = this.value;
-		var fs = e.detail.require('fs');
-		fs.writeFile(filename, editor.lines.join('\n'), function(err) {
-			if (err) {
-				show_messagebox("Could not write to file " + filename, "Error");
-			} else {
-                //editor.filename = filename;
-            }
-		});
-    }, false);
+            var filename = this.value;
+            var fs = e.detail.require('fs');
+            fs.writeFile(filename, editor.lines.join('\n'), function(err) {
+                if (err) {
+                    show_messagebox("Could not write to file " + filename, "Error");
+                } else {
+                    //editor.filename = filename;
+                }
+            });
+        }, false);
 
-    chooser.click();
+        chooser.click();
     });
-    
-    window.isDirty = function() {
-        return true;
-    }
-    
+        
 </script>
 
 </head>

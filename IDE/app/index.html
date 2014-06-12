@@ -55,7 +55,7 @@
                 var alltabs = tabbar.querySelectorAll("li");
                 var dirtyfiles = [];
                 Array.prototype.forEach.call(alltabs, function(el, i) {
-                    if (el.iframe.contentWindow.isDirty && el.iframe.contentWindow.isDirty()) {
+                    if (el.classList.contains('dirty')) {
                         dirtyfiles.push({ filename: el.getAttribute('data-filename'), iframe: el.iframe, tab: el });
                     }
                 });
@@ -131,6 +131,7 @@
 <body>
 	<input style="display:none;" id="fileOpenDialog" type="file" />
 	<input style="display:none;" id="fileSaveDialog" type="file" nwsaveas />
+    <input style="display:none;" id="directorySelectDialog" type="file" nwdirectory />
 	
     <header>
         <div class="windowdrag draggable"></div>

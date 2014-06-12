@@ -4,14 +4,50 @@
 	<meta charset="utf-8">
     <link type="text/css" rel="stylesheet" href="main.min.css" />
     <script>
-        if (window.require !== undefined) {
+        if (window.require !== undefined) {       
+            var os = require('os');
+            var isWindows8 = os.platform() == 'win32' && (os.release().indexOf('6.2') === 0 || os.release().indexOf('6.3') === 0);
+
             var gui = require('nw.gui');
             var win = gui.Window.get();            
-        
+            window.isMaximized = false;
+            win.on('maximize', function(e) { 
+                if (isWindows8) {
+                    win.unmaximize();
+                    setTimeout(function() {
+                        window.isMaximized = false;
+                        MaximizeWorkaround();
+                    }, 50);
+                } else {
+                    window.isMaximized = true;
+                }
+                                       
+            });
+            win.on('unmaximize', function(e) { window.isMaximized = false; });
+                        
             function MaximizeWorkaround() {
-                var nw = require('nw.gui').Window.get();
-                nw.resizeTo(screen.availWidth, screen.availHeight);
-                nw.moveTo(0, 0);   
+                if (isWindows8) {
+                    if (!window.isMaximized) {
+                        window.oldDimensions = { x: win.x, y: win.y, width: win.width, height: win.height };
+                        win.resizeTo(screen.availWidth, screen.availHeight);
+                        win.moveTo(0, 0); 
+                        window.isMaximized = true;
+                        win.setResizable(false);
+                        document.querySelector('.windowdrag').classList.remove('draggable');
+                    } else {
+                        win.resizeTo(window.oldDimensions.width, window.oldDimensions.height);
+                        win.moveTo(window.oldDimensions.x, window.oldDimensions.y);
+                        window.isMaximized = false;
+                        win.setResizable(true);
+                        document.querySelector('.windowdrag').classList.add('draggable');
+                    }
+                } else {
+                    if (window.isMaximized) {
+                        win.unmaximize();
+                    } else {
+                        win.maximize();
+                    }
+                }
             }
 
             gui.Window.get().on('close', function() {
@@ -97,7 +133,7 @@
 	<input style="display:none;" id="fileSaveDialog" type="file" nwsaveas />
 	
     <header>
-        <div class="windowdrag"></div>
+        <div class="windowdrag draggable"></div>
         <div class="title">Main App *</div>
         <div class="windowbuttons">
             <button class="close" onclick="win.close()"><img src="images/close.png"></button>

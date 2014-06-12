@@ -6,47 +6,80 @@
 	
 	<style>
 		.welcome {
-			font-weight: bold;
 			padding: 16px;
+            box-sizing: border-box;
 			text-align: center;
+            /*word-wrap: break-word;*/
+            min-width: 100%;
+            float: left;
 		}
 		
 		.buttons {
 			text-align: center;
 		}
-		
-		button {
-			padding: 0 10px;
-			background: #272727;
-			color: white;
-			border: none;
-			border: 2px solid rgba(255, 255, 255, 0.17);
-			font-weight: bold;
-			font-size: 12px;
-			outline: none;
-			display: inline-block;
-			box-sizing: border-box;
-			line-height: 25px;
-			height: 28px;
-			position: relative;
-			vertical-align: middle;
-			-webkit-user-select: none;
-		}
-		
-		button:hover {
-			border-bottom: 2px solid #2F5A9C;
-		}
-		
-		button:active {
-			line-height: 27px;
-		}
-		
-		
-		#bottombar .buttons button {
-			margin-left: 10px;	
-		}
+        
+        .buttons button {
+            margin-right: 8px;
+        }
+        
+        .buttons button:last-child {
+            margin-right: 0;
+        }
 		
 	</style>
+    <script>
+        var resizeViewPort = function(width, height) {
+            if (window.outerWidth) {
+                window.resizeTo(
+                    width + (window.outerWidth - window.innerWidth),
+                    height + (window.outerHeight - window.innerHeight)
+                );
+            } else {
+                window.resizeTo(500, 500);
+                window.resizeTo(
+                    width + (500 - document.body.offsetWidth),
+                    height + (500 - document.body.offsetHeight)
+                );
+            }
+        };
+        
+        function initButtons(buttons) {
+            var buttonslist = document.querySelector('.buttons');
+            buttons.forEach(function(desc) {
+                var button = document.createElement('button');
+                button.textContent = desc.title;  
+                if (desc.default) {
+                    button.setAttribute('autofocus', 'autofocus');
+                }
+                button.onclick = function() {
+                    if (window.callback) {
+                        window.callback(desc.value);
+                    }
+                    window.close();
+                }
+                buttonslist.appendChild(button);
+            });
+            
+            var welcomewidth = document.querySelector('.welcome').getBoundingClientRect().width;
+            if (welcomewidth > window.innerWidth) {
+                resizeViewPort(welcomewidth, window.innerHeight);
+            } 
+            setTimeout(function() {
+                var bottom = document.querySelector('.buttons').getBoundingClientRect().bottom + 16;
+                resizeViewPort(welcomewidth, bottom);
+            }, 10);
+        }
+        
+        /*window.addEventListener('DOMContentLoaded', function() {
+            var welcomewidth = document.querySelector('.welcome').getBoundingClientRect().width;
+            if (welcomewidth > window.innerWidth) {
+                resizeViewPort(welcomewidth, window.innerHeight);
+            } 
+            var bottom = document.querySelector('.buttons').getBoundingClientRect().bottom + 16;
+            resizeViewPort(welcomewidth, bottom);
+        });*/
+        
+    </script>
 </head>
 <body>	
 	<div class="welcome" id="text">
@@ -54,7 +87,6 @@
 	</div>
 	
 	<div class="buttons">
-		<button onclick="window.close()">OK</button>
 	</div>
 </body>
 </html>

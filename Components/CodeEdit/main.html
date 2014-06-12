@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var fs = e.detail.require('fs');
 		fs.writeFile(filename, editor.lines.join('\n'), function(err) {
 			if (err) {
-				show_messagebox("Could not write to file " + filename);
+				show_messagebox("Could not write to file " + filename, "Error");
 			} else {
                 //editor.filename = filename;
             }

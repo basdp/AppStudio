@@ -246,7 +246,11 @@ projectFolderMenu.append(new gui.MenuItem({ label: 'Rename' }));
 projectFolderMenu.append(new gui.MenuItem({ type: 'separator' }));
 projectFolderMenu.append(new gui.MenuItem({ label: 'Properties' }));
 function project_open_folder_contextmenu(e) {
-	lastFolderLocation = e.target.getAttribute('data-location');
+    var target = e.target;
+    if (e.target.nodeName.toLowerCase() === 'img') {
+        target = target.parentElement;
+    }
+	lastFolderLocation = target.getAttribute('data-location');
 	projectFolderMenu.popup(e.pageX, e.pageY);
 }
 

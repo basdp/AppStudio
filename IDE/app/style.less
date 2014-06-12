@@ -66,7 +66,8 @@ header .title {
 }
 
 .windowbuttons button:hover {
-    background: rgba(0, 0, 0, 0.8);   
+    background: rgba(0, 0, 0, 0.8); 
+    border: none;
 }
 
 header #menu {
@@ -367,4 +368,52 @@ header #windowsmenubar li:hover {
 
 .projecttree {
     padding: 2px;
+}
+
+
+button {
+    transition: border 0.15s, background 0.4s;
+    padding: 0 10px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.80);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    font-size: 12px;
+    outline: none;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 25px;
+    height: 26px;
+    position: relative;
+    vertical-align: middle;
+    -webkit-user-select: none;
+}
+
+button:before {
+    content: "";
+    border: 1px solid transparent;
+    display: block;
+    width: calc(~"100% - (2 * @{button-focus-padding-width})");
+    height: calc(~"100% - (2 * @{button-focus-padding-height})");
+    background: transparent;
+    position: absolute;
+    top: @button-focus-padding-height;
+    left: @button-focus-padding-width;
+    box-sizing: border-box;
+    z-index: 0;
+}
+
+button:hover {
+    border: 1px solid #588ae3;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+button:active {
+    transition: background 0.15s;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+@button-focus-padding-width: 6px;
+@button-focus-padding-height: 2px;
+button:focus:before {
+    border: 1px dotted #588ae3;   
 }

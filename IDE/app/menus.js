@@ -54,7 +54,7 @@ menuHelp.append(new gui.MenuItem({ type: 'separator' }));
 menuHelp.append(new gui.MenuItem({ label: 'Open Debug Inspector', click: function() { require('nw.gui').Window.get().showDevTools() } }));
 menuHelp.append(new gui.MenuItem({ type: 'separator' }));
 menuHelp.append(new gui.MenuItem({ label: 'Check for Updates' }));
-menuHelp.append(new gui.MenuItem({ label: 'About', click: function() { show_messagebox("AppStudio by Bas du Pré"); } }));
+menuHelp.append(new gui.MenuItem({ label: 'About', click: function() { show_messagebox("AppStudio by Bas du Pré Text c:\\sdfsdffasdfdsa\\asfdfsd\\fdsfdsaafsdfsd\\fsdadfssdf\\fsadafdsfds\\affa\\afdsfadsafsd sdfksljlkj lkj lkjl kjkl"); } }));
 
 function openmenu(name, el) {
     var rect = el.getBoundingClientRect();

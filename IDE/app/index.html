@@ -17,24 +17,56 @@
             gui.Window.get().on('close', function() {
                 var tabbar = document.getElementById('tabbar');
                 var alltabs = tabbar.querySelectorAll("li");
+                var dirtyfiles = [];
                 Array.prototype.forEach.call(alltabs, function(el, i) {
                     if (el.iframe.contentWindow.isDirty && el.iframe.contentWindow.isDirty()) {
-                        select_tab(el.getAttribute('data-filename'));
-                        var r = confirm(el.getAttribute('data-filename') + ' is not saved, do you want to save?');
-                        if (r) {
-                            el.iframe.contentWindow.dispatchEvent(new CustomEvent('save', { 'detail': { require: require } } ));                        
-                        }
+                        dirtyfiles.push({ filename: el.getAttribute('data-filename'), iframe: el.iframe, tab: el });
                     }
                 });
+                
+                var win = this;
+                
+                function check_project() {
+                    if (project.dirty) {
+                        show_messagebox('Project \'' + project.name + '\' is not saved, do you want to save?', "Project not saved",
+                                        [{ title: 'Yes', value: 'yes', default: true }, { title: 'No', value: 'no' }, { title: 'Cancel', value: 'cancel' }],
+                                        function(val) {
+                                            if (val === 'yes') {
+                                                project_save();
+                                            }
 
-                if (project.dirty) {
-                    var r = confirm('Project \'' + project.name + '\' is not saved, do you want to save?');
-                    if (r) {
-                        project_save();
-                    }
+                                            if (val === 'cancel') return;
+
+                                            win.close(true);
+                                        }
+                        );
+                    } else {
+                        win.close(true);   
+                    }              
                 }
+                
+                function check_file(i) {
+                    select_tab(dirtyfiles[i].filename);
+                    show_messagebox(dirtyfiles[i].filename + ' is not saved, do you want to save?', "File not saved",
+                                    [{ title: 'Yes', value: 'yes', default: true }, { title: 'No', value: 'no' }, { title: 'Cancel', value: 'cancel' }],
+                                    function(val) {
+                                        if (val === 'yes') {
+                                            dirtyfiles[i].iframe.contentWindow.dispatchEvent(new CustomEvent('save', { 'detail': { require: require } } ));
+                                        }
+                                        
+                                        if (val === 'cancel') return;
 
-                this.close(true);
+                                        if (i + 1 < dirtyfiles.length) {
+                                            con(i + 1);
+                                        } else {
+                                            // all files saved
+                                            check_project();
+                                        }
+                                    }
+                    );
+                }
+                
+                if (dirtyfiles.length > 0) check_file(0); else check_project();
             });
 			
 			if (process.platform === 'darwin') {

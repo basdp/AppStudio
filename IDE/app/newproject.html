@@ -112,36 +112,7 @@
 			right: 20px;
 			bottom: 20px;
 			height: 30px;
-		}
-		
-		button {
-            transition: border 0.15s, background 0.4s;
-			padding: 0 10px;
-			background: transparent;
-			color: rgba(255, 255, 255, 0.80);
-			border: 1px solid rgba(255, 255, 255, 0.30);
-			font-size: 12px;
-			outline: none;
-			display: inline-block;
-			box-sizing: border-box;
-			line-height: 25px;
-			height: 26px;
-			position: relative;
-			vertical-align: middle;
-			-webkit-user-select: none;
-		}
-		
-		button:hover {
-			border: 1px solid #588ae3;
-            background: rgba(255, 255, 255, 0.1);
-		}
-		
-		button:active {
-            transition: background 0.15s;
-			/*line-height: 27px;*/
-            background: rgba(255, 255, 255, 0.07);
-		}
-		
+		}		
 		
 		#bottombar .buttons button {
 			margin-left: 10px;	
@@ -214,17 +185,19 @@
 	</div>
 	
 	<div id="bottombar">
-		<div>
-			<label for="name">Project Name:</label> <input name="name" id="input_name" />
-		</div>
-		<div>
-			<label for="location">Location:</label> <input name="location" id="input_location" />
-		</div>
-		
-		<div class="buttons">
-			<button onclick="OK_click()">OK</button>
-			<button onclick="window.close()">Cancel</button>
-		</div>
+        <form onsubmit="return false">
+            <div>
+                <label for="name">Project Name:</label> <input name="name" id="input_name" />
+            </div>
+            <div>
+                <label for="location">Location:</label> <input name="location" id="input_location" />
+            </div>
+
+            <div class="buttons">
+                <button onclick="OK_click()" type="submit">OK</button>
+                <button onclick="window.close()">Cancel</button>
+            </div>
+        </form>
 	</div>
 </body>
 </html>

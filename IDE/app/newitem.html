@@ -58,11 +58,6 @@
 			float: left;
 		}
 		
-		#templatelist .listview {
-			
-			padding: 2px;
-		}
-		
 		#infoview {
 			width: 30%;
 			box-sizing: border-box;
@@ -119,36 +114,14 @@
 			height: 30px;
 		}
 		
-		button {
-			padding: 0 10px;
-			background: #2e2e2e;
-			color: white;
-			border: none;
-			border: 2px solid rgba(255, 255, 255, 0.17);
-			font-weight: bold;
-			font-size: 12px;
-			outline: none;
-			display: inline-block;
-			box-sizing: border-box;
-			line-height: 25px;
-			height: 28px;
-			position: relative;
-			vertical-align: middle;
-			-webkit-user-select: none;
-		}
-		
-		button:hover {
-			border-bottom: 2px solid #2F5A9C;
-		}
-		
-		button:active {
-			line-height: 27px;
-		}
-		
-		
 		#bottombar .buttons button {
 			margin-left: 10px;	
 		}
+        
+        .projecttree .treeview,
+        #templatelist .listview {
+            height: calc(100% - 4px - 20px);
+        }
 		
 	</style>
 </head>
@@ -193,10 +166,12 @@
 	
 	<div id="templatelist" class="full-height">
         <div class="title">Templates</div>
-		<ul class="listview height32">
-			<li><img src="images/icons/file-project-large.png"/> JavaScript File</li>
-			<li><img src="images/icons/file-project-large.png"/> XML File</li>
-		</ul>
+        <div style="padding: 2px;">
+            <ul class="listview height32">
+                <li><img src="images/icons/file-project-large.png"/> JavaScript File</li>
+                <li><img src="images/icons/file-project-large.png"/> XML File</li>
+            </ul>
+        </div>
 	</div>
 	
 	<div id="infoview" class="full-height">
@@ -208,14 +183,16 @@
 	</div>
 	
 	<div id="bottombar">
-		<div>
-			<label for="name">Name:</label> <input name="name" id="input_name" />
-		</div>
-				
-		<div class="buttons">
-			<button onclick="OK_click()">OK</button>
-			<button onclick="window.close()">Cancel</button>
-		</div>
+        <form onsubmit="return false">
+            <div>
+                <label for="name">Name:</label> <input name="name" id="input_name" />
+            </div>
+
+            <div class="buttons">
+                <button onclick="OK_click()" type="submit">OK</button>
+                <button onclick="window.close()">Cancel</button>
+            </div>
+        </form>
 	</div>
 </body>
 </html>

@@ -63,10 +63,10 @@ if (process.platform === 'darwin') {
     gui.Window.get().menu = menubar;
     menubar.insert(new gui.MenuItem({ label: 'File', submenu: menuFile }), 1);
     //menubar.append(new gui.MenuItem({ label: 'Edit', submenu: menuFile }));
-    menubar.append(new gui.MenuItem({ label: 'Project', submenu: menuFile }));
-    menubar.append(new gui.MenuItem({ label: 'Build', submenu: menuFile }));
-    menubar.append(new gui.MenuItem({ label: 'Team', submenu: menuFile }));
-    menubar.append(new gui.MenuItem({ label: 'Tools', submenu: menuFile }));
+    //menubar.append(new gui.MenuItem({ label: 'Project', submenu: menuFile }));
+    //menubar.append(new gui.MenuItem({ label: 'Build', submenu: menuFile }));
+    //menubar.append(new gui.MenuItem({ label: 'Team', submenu: menuFile }));
+    //menubar.append(new gui.MenuItem({ label: 'Tools', submenu: menuFile }));
     menubar.append(new gui.MenuItem({ label: 'Help', submenu: menuHelp }));
 }
 

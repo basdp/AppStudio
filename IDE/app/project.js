@@ -183,6 +183,9 @@ function project_loadprojectfile(filename) {
     
     project.ternServer = new tern.Server({
         defs: [require('tern/defs/ecma5')],
+        plugins: { 
+            'doc_comment': true 
+        },
         getFile: function(name) {
             return fs.readFileSync(path.resolve(project.location, name), "utf8");
         },
@@ -301,6 +304,7 @@ if (window.require !== undefined) {
         projectFileMenu.popup(e.pageX, e.pageY);
     }
 
+    require('tern/plugin/doc_comment');
     var tern = require('tern');
     
 }

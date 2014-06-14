@@ -194,40 +194,41 @@ editor.language = {
 		return line.match(/[a-zA-Z0-9]*$/)[0];
 	},
 	
-	getIntellisenseFromCurrentState: function() {
-		var items = [
-			{ name: 'catchKey', type: 'property' },
-			{ name: 'inMultiLineComment', type: 'method' },
-			{ name: 'getIntellisenseFromCurrentState', type: 'property' },
-			{ name: 'addDays', type: 'method' },
-			{ name: 'addMonths', type: 'method' },
-			{ name: 'editor', type: 'method' },
-			{ name: 'getKeywordUpToCaret', type: 'method' },
-			{ name: 'inString', type: 'property' },
-			{ name: 'multiLineCommentStartTrigger', type: 'method' },			
-		];
-		
-		for (var i = 0; i < editor.language.keywords1.keywords.length; i++) {
-			items.push({ name: editor.language.keywords1.keywords[i], type: 'snippet' });
-		}
-		
-		for (var i = 0; i < editor.language.keywords2.keywords.length; i++) {
-			items.push({ name: editor.language.keywords2.keywords[i], type: 'class' });
-		}
-		
-		for (var i = 0; i < editor.language.keywords3.keywords.length; i++) {
-			items.push({ name: editor.language.keywords3.keywords[i], type: 'const' });
-		}
-	
-		items.sort(function(a, b) {
-			if (a.name.toLowerCase() < b.name.toLowerCase())
-				return -1;
-			if (a.name.toLowerCase() > b.name.toLowerCase())
-				return 1;
-			return 0;
-		});
-		
-		return items;
+	getIntellisenseFromCurrentState: function(callback) {
+        project.ternServer.request({
+            query: {
+                type: 'completions',
+                file: editor.filename,
+                end: { line: editor.caretPosition.y, ch: editor.caretPosition.x },
+                types: true,
+                docs: true,
+                urls: true,
+                origins: true,
+                filter: false,
+                caseInsensitive: true,
+                includeKeywords: true,
+            },
+            files: [
+                {
+                    type: 'full',
+                    name: editor.filename,
+                    text: editor.lines.join('\n'),
+                }
+            ],
+        }, function(error, response) {
+            console.log(response);
+            if (error === null) {
+                var items = [];
+                response.completions.forEach(function(c) {
+                    var type = 'property';
+                    if (c.type.indexOf('fn(') === 0) {
+                        type = 'method';
+                    }
+                    items.push({ name: c.name, type: type, doc: c.doc });
+                });
+                callback(items);
+            }
+        });
 	},
 	
 	onInsert: function(str) {

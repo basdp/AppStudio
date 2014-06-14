@@ -113,9 +113,19 @@
 				document.getElementsByTagName("head")[0].appendChild(fileref);
 			}
         } 
+        
+        function setTitle(title) {
+            document.getElementsByTagName('title')[0].textContent = title;
+            document.querySelector('header .title').textContent = title;
+        }
+        
         window.addEventListener('DOMContentLoaded', function(){
             //new_tab("appstudio://getting-started", "Getting Started", true, webbrowsereditor); 
-            new_tab("gettingstarted.html", "Getting Started", true, webbrowsereditor); 
+            new_tab("gettingstarted.html", "Getting Started", true, webbrowsereditor);
+            
+            setTitle('AppStudio');
+            
+            project_loadprojectfile('demoproject/demoproject.proj');
         });
     </script>
     <script src="fullheight.js"></script>

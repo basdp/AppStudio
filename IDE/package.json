@@ -25,6 +25,7 @@
     "grunt-contrib-watch": "^0.6.1"
   },
   "dependencies": {
-    "nodewebkit": "git://github.com/basdp/nodewebkit"
+    "nodewebkit": "git://github.com/basdp/nodewebkit",
+    "tern": "^0.6.2"
   }
 }

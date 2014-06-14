@@ -164,20 +164,43 @@ function project_open() {
 	var chooser = document.getElementById("fileOpenDialog");
 	chooser.setAttribute("accept", ".proj");
     chooser.addEventListener("change", function(evt) {
-		var fs = require('fs');
-    	var json = fs.readFileSync(this.value);
-		window.project = JSON.parse(json);
-        project.dirty = false;
-		rebuild_project_treeview();
+        project_loadprojectfile(this.value);
     }, false);
 
     chooser.click();  
+}
+
+function project_loadprojectfile(filename) {
+    var fs = require('fs');
+    var json = fs.readFileSync(filename);
+    window.project = JSON.parse(json);
+    project.dirty = false;
+    project.filename = filename;
+    rebuild_project_treeview();
+    setTitle(project.name);
+    
+    var path = require("path");
+    
+    project.ternServer = new tern.Server({
+        defs: [require('tern/defs/ecma5')],
+        getFile: function(name) {
+            return fs.readFileSync(path.resolve(project.location, name), "utf8");
+        },
+        
+    });
+    
+    project.children.forEach(function(file) {
+        if (file.children === null && file.location.substr(file.location.length - 3, 3).toLowerCase() == '.js') {
+            project.ternServer.addFile(file.location);
+        }
+    });
 }
 
 function project_getJSON() {
     var dat = JSON.stringify(project);
     var proj = JSON.parse(dat);
     delete proj.dirty;
+    delete proj.filename;
     dat = JSON.stringify(proj);
     return dat;
 }
@@ -243,39 +266,41 @@ function project_open_file(filename) {
 
 if (window.require !== undefined) {
     
-var projectFolderAddMenu = new gui.Menu();
-projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Item...', click: function(e) { openToolWindow('newitem.html', 800, 500); } }));
-projectFolderAddMenu.append(new gui.MenuItem({ label: 'Existing Item...' }));
-projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Folder', click: function(e) { var folder = prompt("Folder name:"); if (folder) project_add_folder(folder); } }));
+    var projectFolderAddMenu = new gui.Menu();
+    projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Item...', click: function(e) { openToolWindow('newitem.html', 800, 500); } }));
+    projectFolderAddMenu.append(new gui.MenuItem({ label: 'Existing Item...' }));
+    projectFolderAddMenu.append(new gui.MenuItem({ label: 'New Folder', click: function(e) { var folder = prompt("Folder name:"); if (folder) project_add_folder(folder); } }));
 
-var projectFolderMenu = new gui.Menu();
-projectFolderMenu.append(new gui.MenuItem({ label: 'New', submenu: projectFolderAddMenu }));
-projectFolderMenu.append(new gui.MenuItem({ type: 'separator' }));
-projectFolderMenu.append(new gui.MenuItem({ label: 'Delete' }));
-projectFolderMenu.append(new gui.MenuItem({ label: 'Rename' }));
-projectFolderMenu.append(new gui.MenuItem({ type: 'separator' }));
-projectFolderMenu.append(new gui.MenuItem({ label: 'Properties' }));
-function project_open_folder_contextmenu(e) {
-    var target = e.target;
-    if (e.target.nodeName.toLowerCase() === 'img') {
-        target = target.parentElement;
+    var projectFolderMenu = new gui.Menu();
+    projectFolderMenu.append(new gui.MenuItem({ label: 'New', submenu: projectFolderAddMenu }));
+    projectFolderMenu.append(new gui.MenuItem({ type: 'separator' }));
+    projectFolderMenu.append(new gui.MenuItem({ label: 'Delete' }));
+    projectFolderMenu.append(new gui.MenuItem({ label: 'Rename' }));
+    projectFolderMenu.append(new gui.MenuItem({ type: 'separator' }));
+    projectFolderMenu.append(new gui.MenuItem({ label: 'Properties' }));
+    function project_open_folder_contextmenu(e) {
+        var target = e.target;
+        if (e.target.nodeName.toLowerCase() === 'img') {
+            target = target.parentElement;
+        }
+        lastFolderLocation = target.getAttribute('data-location');
+        projectFolderMenu.popup(e.pageX, e.pageY);
     }
-	lastFolderLocation = target.getAttribute('data-location');
-	projectFolderMenu.popup(e.pageX, e.pageY);
-}
 
-var lastFileLocation = null;
+    var lastFileLocation = null;
 
-var projectFileMenu = new gui.Menu();
-projectFileMenu.append(new gui.MenuItem({ label: 'Open', click: function(e) { project_open_file(lastFileLocation); } }));
-projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
-projectFileMenu.append(new gui.MenuItem({ label: 'Delete' }));
-projectFileMenu.append(new gui.MenuItem({ label: 'Rename' }));
-projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
-projectFileMenu.append(new gui.MenuItem({ label: 'Properties' }));
-function project_open_file_contextmenu(e) {
-	lastFileLocation = e.target.getAttribute('data-location');
-	projectFileMenu.popup(e.pageX, e.pageY);
-}
+    var projectFileMenu = new gui.Menu();
+    projectFileMenu.append(new gui.MenuItem({ label: 'Open', click: function(e) { project_open_file(lastFileLocation); } }));
+    projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
+    projectFileMenu.append(new gui.MenuItem({ label: 'Delete' }));
+    projectFileMenu.append(new gui.MenuItem({ label: 'Rename' }));
+    projectFileMenu.append(new gui.MenuItem({ type: 'separator' }));
+    projectFileMenu.append(new gui.MenuItem({ label: 'Properties' }));
+    function project_open_file_contextmenu(e) {
+        lastFileLocation = e.target.getAttribute('data-location');
+        projectFileMenu.popup(e.pageX, e.pageY);
+    }
+
+    var tern = require('tern');
     
 }

@@ -101,7 +101,9 @@ function new_tab(filename, title, open, editor) {
                 }
             },
         };
+        iframe.contentWindow.project = project;
         iframe.contentWindow.dispatchEvent(new CustomEvent('tabmanageravailable', { 'detail': { 'require': require } } ));
+        iframe.contentWindow.dispatchEvent(new CustomEvent('projectavailable', { 'detail': { 'require': require } } ));
         iframe.contentWindow.dispatchEvent(new CustomEvent('openlocation', { 'detail': { 'location': filename, 'require': require, 'toolbar': document.querySelector("#toolbar div." + editor.toolbar) } } ));
     });
 }

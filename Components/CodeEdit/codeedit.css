@@ -129,6 +129,7 @@ html, body {
 	background-position: 3px;
 	background-repeat: no-repeat;
 	border: 1px solid transparent;
+    position: relative;
 }
 
 #intellisense li.selected {
@@ -162,4 +163,16 @@ html, body {
 
 #intellisense li.tag {
 	background-image: url('icons/tag.png');
+}
+
+#intellisensedoc {
+    display: none;
+    position: absolute;
+    padding: 2px;
+    background: #E8E8EC;
+    border: 1px solid #CCCEDB;
+    width: 150px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: "Segoe UI", "Lucida Grande", "Roboto", "Arial", sans-serif;
 }

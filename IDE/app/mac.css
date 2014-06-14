@@ -23,6 +23,14 @@
     padding: 0;
 }
 
+.windowbuttons button:before {
+    display: none;
+}
+
+.windowbuttons button:focus:before {
+    display: none;
+}
+
 .windowbuttons button img {
     display: none;
 }

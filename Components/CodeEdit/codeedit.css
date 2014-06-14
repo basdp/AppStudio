@@ -4,7 +4,7 @@ html, body {
 }
 
 #editor {
-	font-family: consolas, monospace;
+	font-family: Monaco, consolas, monospace;
 	font-size: 13px;
 	overflow: scroll;
 	position: relative;

@@ -10,6 +10,7 @@
     left: 6px;
     top: 4px;
     right: auto;
+    display: flex;
 }
 
 .windowbuttons button {
@@ -18,8 +19,8 @@
     height: 13px;
     border-radius: 5px;
     margin-right: 6px;
-    background-clip: border-box;
     overflow: hidden;
+    padding: 0;
 }
 
 .windowbuttons button img {
@@ -29,16 +30,19 @@
 .windowbuttons button.close {
     background: #fa614f;
     border: 1px solid #b24538;
-}
-
-.windowbuttons button.maximize {
-    background: #ffc107;
-    border: 1px solid #b38705;
+    order: 1;
 }
 
 .windowbuttons button.minimize {
+    background: #ffc107;
+    border: 1px solid #b38705;
+    order: 2;
+}
+
+.windowbuttons button.maximize {
     background: #0cd031;
     border: 1px solid #0aad28;
+    order: 3;
 }
 
 .windowbuttons button:hover:after {
